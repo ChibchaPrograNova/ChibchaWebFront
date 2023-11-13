@@ -1,13 +1,8 @@
 <template>
-    <TheLayout>
-        <div>
-            Chibchaweb Main Page
-        </div>
-    </TheLayout>
+    <div>ayaya</div>
 </template>
 
 <script setup>
-import TheLayout from '../../components/UI/TheLayout.vue';
 </script>
 
 <style scoped>
