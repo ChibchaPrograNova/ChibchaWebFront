@@ -1,7 +1,7 @@
 <template>
     <div class="headerWrapper">
         <RouterLink to="/" class="logo">
-            <img src="src\assets\LogoApp.svg">
+            <img src="\src\assets\LogoApp.svg">
             <h1>ChibchaWeb</h1>
         </RouterLink>
 
