@@ -15,8 +15,8 @@ const router = createRouter({
       component: () => import('../pages/Admin/distributor/distributorForm.vue')
     },
     {
-      path: '/distribuidorInfo/:id', 
-      component: () => import('../pages/Admin/distributor/distributorInfo.vue'), 
+      path: '/distribuidorInfo/:id',
+      component: () => import('../pages/Admin/distributor/distributorInfo.vue'),
       props: true
     },
     {
@@ -30,8 +30,8 @@ const router = createRouter({
       component: () => import('../pages/Admin/employee/employeeForm.vue')
     },
     {
-      path: '/employeeInfo/:id', 
-      component: () => import('../pages/Admin/employee/employeeInfo.vue'), 
+      path: '/employeeInfo/:id',
+      component: () => import('../pages/Admin/employee/employeeInfo.vue'),
       props: true
     },
     {
@@ -40,14 +40,14 @@ const router = createRouter({
       component: () => import('../pages/Admin/employee/employeeView.vue')
     },
     {
-      path: '/userInfo/:id', 
-      component: () => import('../pages/Admin/User/userInfo.vue'),
+      path: '/userInfo/:id',
+      component: () => import('../pages/Admin/user/userInfo.vue'),
       props: true
     },
     {
       path: '/vistaUser',
       name: 'userView',
-      component: () => import('../pages/Admin/User/userView.vue')
+      component: () => import('../pages/Admin/user/userView.vue')
     },
     {
       path: '/home',
