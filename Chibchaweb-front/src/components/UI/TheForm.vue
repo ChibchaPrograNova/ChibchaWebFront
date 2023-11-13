@@ -25,7 +25,7 @@
                     :placeholder="field.placeholder" v-model="formData[field.name]" />
             </div>
             <div class="input-row">
-                <button type="submit">Enviar</button>
+                <button type="submit">{{ buttonText }}</button>
             </div>
         </form>
     </BaseCard>
@@ -38,6 +38,10 @@ import BaseCard from '../../components/UI/BaseCard.vue';
 export default {
     props: {
         formConfig: [Array, Object],
+        buttonText: String,
+    },
+    components: {
+        BaseCard
     },
     data() {
         return {
@@ -101,8 +105,8 @@ export default {
 
             return formFields;
         },
-        handleSubmit(e) {
-            e.preventDefault();
+        handleSubmit() {
+            this.$emit("submit", this.formData);
         },
     },
 };
@@ -135,9 +139,9 @@ textarea {
 
 input:focus,
 textarea:focus {
-    background-color: #f0e6fd;
+    background-color: #e3e3d1;
     outline: none;
-    border-color: #3d008d;
+    border-color: #4b5757;
 }
 
 input[type="checkbox"] {
@@ -147,20 +151,38 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:focus {
-    outline: #3d008d solid 1px;
+    outline: #4b5757 solid 1px;
 }
 
-h3 {
-    margin: 0.5rem 0;
-    font-size: 1rem;
+button {
+    margin-top: 30px;
+    background-color: #7c8a6e;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    list-style: none;
+    outline: none;
+    padding: 10px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 
-.invalid label {
-    color: red;
-}
-
-.invalid input,
-.invalid textarea {
-    border: 1px solid red;
+button:hover,
+button:focus {
+    background-color: #b0b087;
 }
 </style>
