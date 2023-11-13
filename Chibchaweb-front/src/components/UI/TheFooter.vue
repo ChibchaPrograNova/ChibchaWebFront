@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <p>Este es un footer básico</p>
+        <p>Desarrollado por PrograNova @2023</p>
     </footer>
 </template>
   
@@ -9,7 +9,7 @@
   
 <style scoped>
 footer {
-    background-color: #9b0404;
+    background-color: #b0b087;
     padding: 10px;
     text-align: center;
 }

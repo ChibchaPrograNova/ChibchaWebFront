@@ -1,8 +1,17 @@
 <template>
-  <div>Nombre de pagina</div>
+  <TheLayout>
+      <div>
+          Chibchaweb Main Page
+      </div>
+  </TheLayout>
 </template>
 
 <script setup>
+import TheLayout from '../../components/UI/TheLayout.vue';
 </script>
 
-<style scoped></style>
+<style scoped>
+body {
+  margin: 0;
+}
+</style>
