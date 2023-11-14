@@ -1,7 +1,9 @@
 <template>
-    <h3>Registrate</h3>
-    <div class="form-container">
-        <TheForm :form-config="formConfig1" :button-text="'Iniciar Sesion'" @submit="login" />
+    <div>
+        <h3>Registrate</h3>
+        <div class="form-container">
+            <TheForm :form-config="formConfig1" :button-text="'Iniciar Sesion'" @submit="login" />
+        </div>
     </div>
 </template>
   
