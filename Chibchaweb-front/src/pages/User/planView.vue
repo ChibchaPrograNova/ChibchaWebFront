@@ -11,13 +11,15 @@
                 <p class="tarjeta-contenido">Antivirus</p>
                 <p class="tarjeta-contenido">Descuentos: </p>
                 <p class="tarjeta-contenido">$30000 COP/mes</p>
-                <select id="Precio" name="precio " v-model="tipoPago">
-                    <option value="Mensual">Mensual</option>
-                    <option value="Trimestral">Trimestral</option>
-                    <option value="Semestral">Semestral</option>
-                    <option value="Anual">Anual</option>
+                <label for="precio">Selecciona el Plan de Pago </label>
+                <select id="Precio" name="precio " v-model="tipoPagoOro">
+                    <option value="0">Mensual</option>
+                    <option value="1">Trimestral</option>
+                    <option value="2">Semestral</option>
+                    <option value="3">Anual</option>
                 </select>
-                <Button @click="redirectToPrices"> Ver Precios</Button>
+                <p>{{ calcularTotal(30000,tipoPagoOro) }}</p>
+                <Button @click="redirectToPayment">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard">
                 <h2 class="tarjeta-titulo">Plan Platino</h2>
@@ -26,13 +28,15 @@
                 <p class="tarjeta-contenido">Antivirus</p>
                 <p class="tarjeta-contenido">Descuentos: </p>
                 <p class="tarjeta-contenido">$40.000 COP/mes</p>
-                <select id="Precio" name="precio " v-model="tipoPago">
-                    <option value="Mensual">Mensual</option>
-                    <option value="Trimestral">Trimestral</option>
-                    <option value="Semestral">Semestral</option>
-                    <option value="Anual">Anual</option>
+                <label for="precio">Selecciona el Plan de Pago </label>
+                <select id="Precio" name="precio " v-model="tipoPagoPlatino">
+                    <option value="0">Mensual</option>
+                    <option value="1">Trimestral</option>
+                    <option value="2">Semestral</option>
+                    <option value="3">Anual</option>
                 </select>
-                <Button @click="redirectToPrices"> Ver Precios</Button>
+                <p>{{ calcularTotal(40000,tipoPagoPlatino) }}</p>
+                <Button @click="redirectToPayment">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard notFeatured">
                 <h2 class="tarjeta-titulo">Plan Plata</h2>
@@ -41,16 +45,15 @@
                 <p class="tarjeta-contenido">Antivirus</p>
                 <p class="tarjeta-contenido">Descuentos: </p>
                 <p class="tarjeta-contenido">$20.000 COP/mes</p>
-                <label for="precio">Selecciona frecuencia de pago </label>
-                <select id="Precio" name="precio " v-model="tipoPago">
-                    <option value='1'>Mensual</option>
-                    <option value='3'>Trimestral</option>
-                    <option value='6'>Semestral</option>
-                    <option value='12'>Anual</option>
+                <label for="precio">Selecciona el Plan de Pago </label>
+                <select id="Precio" name="precio "  v-model="tipoPagoSilver">
+                    <option value='0'>Mensual</option>
+                    <option value='1'>Trimestral</option>
+                    <option value='2'>Semestral</option>
+                    <option value='3'>Anual</option>
                 </select>
-                <p>{{ calcularTotal }}</p>
-                <p>{{ totalPago }}</p>
-                <Button @click="redirectToPrices"> Ver Precios</Button>
+                <p>{{ calcularTotal(20000,tipoPagoSilver) }}</p>
+                <Button @click="redirectToPayment">Comprar</Button>
             </BaseCard>
         </div>
     </div>
@@ -61,21 +64,30 @@ import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
 import BaseCard from '../../components/UI/BaseCard.vue';
 
+import { onUpdated } from 'vue'
+
 const router = useRouter()
-function redirectToPrices() {
+function redirectToPayment() {
     router.replace({ name: 'paymentView' })
 }
 
-const tipoPago = ref(0)
-
-const totalPago = computed(() => {
-    console.log(tipoPago.value)
-    return 5 * parseInt(tipoPago.value)
-})
+const tipoPagoOro = ref(0)
+const tipoPagoPlatino = ref(0)
+const tipoPagoSilver = ref(0)
 
 
-function calcularTotal() {
-    
+
+
+function calcularTotal(precio, tipoPago) {
+    const opcion = parseInt(tipoPago);
+    const plan = "plata";
+    const descuentos = [0,0.05,0.1,0.15]
+    const meses = [1,3,6,12]
+;
+
+    const descuento = 1 - descuentos[opcion];
+    const total = precio * meses[opcion] * descuento;
+    return total;
 }
 </script>
 
