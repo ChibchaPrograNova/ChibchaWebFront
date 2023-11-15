@@ -2,12 +2,15 @@
     <div>
         <h3>Inicia sesion</h3>
         <div class="form-container">
-            <TheForm :form-config="formConfig1" :button-text="'Iniciar Sesion'" @submit="login" />
+            <BaseCard>
+                <TheForm :form-config="formConfig1" :button-text="'Iniciar Sesion'" @submit-event="login" />
+            </BaseCard>
         </div>
     </div>
 </template>
   
 <script setup>
+import BaseCard from '../../components/UI/BaseCard.vue';
 import TheForm from '../../components/UI/TheForm.vue';
 
 let formConfig1 = [

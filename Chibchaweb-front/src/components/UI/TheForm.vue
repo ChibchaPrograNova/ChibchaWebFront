@@ -1,39 +1,35 @@
 <template>
-    <BaseCard>
-        <form @submit.prevent="handleSubmit">
-            <div class="input-row" v-for="(field, index) in formFields" :key="index">
-                <label :for="field.name">{{ field.label }}</label>
+    <form @submit.prevent="$emit('submitEvent', this.formData)">
+        <div class="input-row" v-for="(field, index) in formFields" :key="index">
+            <label :for="field.name">{{ field.label }}</label>
 
-                <input v-if="field.type === 'text' ||
-                    field.type === 'email' ||
-                    field.type === 'tel' ||
-                    field.type === 'password'
-                    " :name="field.name" :type="field.type" :id="field.name" :placeholder="field.placeholder || ''"
-                    v-model="formData[field.name]" />
-                <input v-else-if="field.type === 'number'" :name="field.name" :type="field.type" :id="field.name"
-                    :placeholder="field.placeholder || ''" :min="field.min || null" :max="field.max || null"
-                    :step="field.step || null" v-model="formData[field.name]" />
+            <input v-if="field.type === 'text' ||
+                field.type === 'email' ||
+                field.type === 'tel' ||
+                field.type === 'password'
+                " :name="field.name" :type="field.type" :id="field.name" :placeholder="field.placeholder || ''"
+                v-model="formData[field.name]" />
+            <input v-else-if="field.type === 'number'" :name="field.name" :type="field.type" :id="field.name"
+                :placeholder="field.placeholder || ''" :min="field.min || null" :max="field.max || null"
+                :step="field.step || null" v-model="formData[field.name]" />
 
-                <select v-else-if="field.type === 'select'" :name="field.name" :id="field.name"
-                    v-model="formData[field.name]">
-                    <option v-for="(option, optIndex) in field.options" :key="optIndex" :value="option.value">
-                        {{ option.label }}
-                    </option>
-                </select>
+            <select v-else-if="field.type === 'select'" :name="field.name" :id="field.name" v-model="formData[field.name]">
+                <option v-for="(option, optIndex) in field.options" :key="optIndex" :value="option.value">
+                    {{ option.label }}
+                </option>
+            </select>
 
-                <textarea v-else-if="field.type === 'textarea'" :name="field.name" :id="field.name"
-                    :placeholder="field.placeholder" v-model="formData[field.name]" />
-            </div>
-            <div class="input-row">
-                <button type="submit">{{ buttonText }}</button>
-            </div>
-        </form>
-    </BaseCard>
+            <textarea v-else-if="field.type === 'textarea'" :name="field.name" :id="field.name"
+                :placeholder="field.placeholder" v-model="formData[field.name]" />
+        </div>
+        <div class="input-row" id="buttonRow">
+            <button type="submit">{{ buttonText }}</button>
+        </div>
+    </form>
 </template>
   
 <script>
 import FormBuilder from '../../helpers/FormBuilder';
-import BaseCard from '../../components/UI/BaseCard.vue';
 
 export default {
     props: {
@@ -41,7 +37,6 @@ export default {
         buttonText: String,
     },
     components: {
-        BaseCard
     },
     data() {
         return {
@@ -104,9 +99,6 @@ export default {
             }
 
             return formFields;
-        },
-        handleSubmit() {
-            this.$emit("submit", this.formData);
         },
     },
 };

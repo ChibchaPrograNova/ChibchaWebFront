@@ -90,14 +90,20 @@ const router = createRouter({
       component: () => import('../pages/User/resultView.vue')
     },
     {
-      path: '/domain',
+      path: '/domain/:nombreDominio',
       name: 'searchDomain',
-      component: () => import('../pages/User/searchDomain.vue')
+      component: () => import('../pages/User/searchDomain.vue'),
+      props: true
     },
     {
       path: '/userDashboard',
       name: 'userDashboard',
       component: () => import('../pages/User/userDashboard.vue')
+    },
+    {
+      path: '/vistaPlan',
+      name: 'planView',
+      component: () => import('../pages/User/planView.vue')
     }
 
     // {

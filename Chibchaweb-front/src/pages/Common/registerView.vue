@@ -2,24 +2,42 @@
     <div>
         <h3>Registrate</h3>
         <div class="form-container">
-            <TheForm :form-config="formConfig1" :button-text="'Iniciar Sesion'" @submit="login" />
+            <BaseCard>
+                <TheForm :form-config="formConfig1" :button-text="'Registrar'" @submit-event="login" />
+            </BaseCard>
         </div>
     </div>
 </template>
   
 <script setup>
+import BaseCard from '../../components/UI/BaseCard.vue';
 import TheForm from '../../components/UI/TheForm.vue';
-
+import { useRouter } from 'vue-router';
 let formConfig1 = [
     {
         type: 'text',
         name: 'Username',
-        label: 'Nombre',
-        placeholder: 'Ingresa tu nombre de usuario',
+        label: 'Nombre Completo',
+        placeholder: 'Ingresa tu nombre completo',
+    },
+    {
+        type: 'select',
+        name: 'tipoDoc',
+        label: 'Tipo Documento',
+        options: [
+            { value: 'CC', label: 'Cédula de Ciudadanía' },
+            { value: 'CE', label: 'Cédula Extranjería' },
+            { value: 'NIT', label: 'Número de Identificación Tributaria' }],
+    },
+    {
+        type: 'number',
+        name: 'numeroDocumento',
+        label: 'Número de Documento',
+        placeholder: 'Ingresa tu número de documento',
     },
     {
         type: 'text',
-        name: 'Username',
+        name: 'address',
         label: 'Dirección',
         placeholder: 'Ingresa tu Dirección',
     },
@@ -27,19 +45,13 @@ let formConfig1 = [
         type: 'text',
         name: 'email',
         label: 'Correo',
-        placeholder: 'Ingresa tu Coreo Electronico',
+        placeholder: 'Ingresa tu Correo Electrónico',
     },
     {
-        type: 'number',
-        name: 'age',
-        label: 'Edad',
-        placeholder: 'Ingresa tu Edad',
-    },
-    {
-        type: 'text',
+        type: 'select',
         name: 'country',
-        label: 'Pais',
-        placeholder: 'Ingresa tu pais',
+        label: 'País',
+        options: [{ value: 'colombia', label: 'Colombia' }, { value: 'Other', label: 'Otros Paises' }],
     },
     {
         type: 'password',
@@ -48,10 +60,14 @@ let formConfig1 = [
         placeholder: 'Ingresa tu contraseña',
     },
 ]
-
-function login() {
-    alert("ayaya")
-    this.$router.replace("/infoEmployee");
+const router = useRouter()
+function redirectToSearch() {
+    router.replace({ name: 'planView' })
+}
+function login(newUser) {
+    console.log(newUser)
+    redirectToSearch()
+    //this.$router.replace("/infoEmployee");
 }
 
 </script>
