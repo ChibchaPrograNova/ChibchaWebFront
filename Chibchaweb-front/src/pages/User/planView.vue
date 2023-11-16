@@ -61,10 +61,10 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import BaseCard from '../../components/UI/BaseCard.vue';
 
-import { onUpdated } from 'vue'
+//import { onUpdated } from 'vue'
 
 const router = useRouter()
 function redirectToPayment() {
@@ -75,12 +75,8 @@ const tipoPagoOro = ref(0)
 const tipoPagoPlatino = ref(0)
 const tipoPagoSilver = ref(0)
 
-
-
-
 function calcularTotal(precio, tipoPago) {
     const opcion = parseInt(tipoPago);
-    const plan = "plata";
     const descuentos = [0,0.05,0.1,0.15]
     const meses = [1,3,6,12]
 ;
