@@ -23,7 +23,7 @@
                     <option value="3">Anual</option>
                 </select>
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(30000, tipoPagoOro) }}</p>
-                <p>Precio con Descuento = ${{ calcularTotal(20000, tipoPagoOro) }}</p>
+                <p>Precio con Descuento = ${{ calcularTotal(30000, tipoPagoOro) }}</p>
                 <Button @click="redirectToPayment">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard">
@@ -45,7 +45,7 @@
                     <option value="3">Anual</option>
                 </select>
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(40000, tipoPagoPlatino) }}</p>
-                <p>Precio con Descuento = ${{ calcularTotal(20000, tipoPagoPlatino) }}</p>
+                <p>Precio con Descuento = ${{ calcularTotal(40000, tipoPagoPlatino) }}</p>
                 <Button @click="redirectToPayment">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard notFeatured">
