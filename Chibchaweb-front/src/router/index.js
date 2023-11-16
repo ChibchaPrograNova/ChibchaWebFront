@@ -104,6 +104,11 @@ const router = createRouter({
       path: '/vistaPlan',
       name: 'planView',
       component: () => import('../pages/User/planView.vue')
+    },
+    {
+      path: '/vistaAyuda',
+      name: 'ayuda',
+      component: () => import('../pages/User/ticketView.vue')
     }
 
     // {

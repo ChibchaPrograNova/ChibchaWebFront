@@ -1,9 +1,6 @@
 <template>
     <div>
-        <h3>Detalle de la Compra</h3>
-        <div class = "formContainer">
-            a
-        </div>
+        <h3>Ayuda y Soporte</h3>
     </div>
 </template>
 
