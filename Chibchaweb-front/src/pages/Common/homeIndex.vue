@@ -29,6 +29,7 @@ function redirectToSearch() {
     font-family: 'Poppins', sans-serif;
     font-style: italic;
     border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 .srcInput:focus {
@@ -59,7 +60,7 @@ h3 {
     font-size: 20px;
 }
 
-button{
+button {
     background-color: #7c8a6e;
     border-radius: 8px;
     border-style: none;

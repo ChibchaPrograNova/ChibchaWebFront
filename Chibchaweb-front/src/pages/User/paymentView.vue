@@ -16,6 +16,7 @@
                 <h2>Resumen de compra</h2>
                 <BaseCard class="cards">
                     <p>Nombre del Dominio: </p>
+                    <p>Distribuidor del dominio</p>
                     <p>Paquete: </p>
                     <p>Plan de pago: </p>
                     <p>Precio: </p>

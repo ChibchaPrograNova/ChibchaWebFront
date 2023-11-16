@@ -22,12 +22,12 @@
                     <tr>
                         <td>{{ paginaNombre.nombreDominio }}.com</td>
                         <td>Amazon</td>
-                        <td><button @click="redirectToLogin">Comprar</button></td>
+                        <td><button @click="redirectToSearch">Comprar!</button></td>
                     </tr>
                     <tr>
                         <td>{{ paginaNombre.nombreDominio }}.gg</td>
                         <td>Azure</td>
-                        <td><button>Comprar</button></td>
+                        <td><button @click="redirectToSearch">Comprar</button></td>
                     </tr>
                 </tbody>
             </table>
