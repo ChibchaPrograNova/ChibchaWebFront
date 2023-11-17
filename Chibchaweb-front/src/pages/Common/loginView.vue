@@ -12,8 +12,20 @@
 <script setup>
 import BaseCard from '../../components/UI/BaseCard.vue';
 import TheForm from '../../components/UI/TheForm.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 let formConfig1 = [
+    {
+        type: 'select',
+        name: 'type',
+        label: 'Tipo de Usuario',
+        options: [
+            { value: 'CL', label: 'Cliente' },
+            { value: 'EM', label: 'Empleado' },
+            { value: 'ADM', label: 'Administrador' }],
+    },
     {
         type: 'text',
         name: 'Username',
@@ -28,9 +40,14 @@ let formConfig1 = [
     },
 ]
 
-function login() {
-    alert("ayaya")
-    this.$router.replace("/infoEmployee");
+function login(user) {
+    if (user.type == 'CL') {
+        router.replace({ name: 'userDashboard' })
+    } else if (user.type == 'EM') {
+        router.replace({ name: 'mainDashboard' })
+    } else {
+        router.replace({ name: 'adminDashboard' })
+    }
 }
 
 </script>

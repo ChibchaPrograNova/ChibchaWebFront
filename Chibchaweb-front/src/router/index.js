@@ -10,6 +10,11 @@ const router = createRouter({
       component: index
     },
     {
+      path: '/adminDashboard',
+      name: 'adminDashboard',
+      component: () => import('../pages/Admin/indexAdmin.vue')
+    },
+    {
       path: '/newDistributor',
       name: 'distributorForm',
       component: () => import('../pages/Admin/distributor/distributorForm.vue')
@@ -111,23 +116,6 @@ const router = createRouter({
       component: () => import('../pages/User/ticketView.vue')
     }
 
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   component: () => imzzzport('../views/AboutView.vue')
-    // }
-    // ejemplo de rutas 
-    // { path: '/', redirect: '/coaches' },
-    //     { path: '/coaches', component: CoachesList },
-    //     {
-    //         path: '/coaches/:id', component: CoachDetail, props: true, children: [
-    //             { path: 'contact', component: ContactCoach },
-    //         ]
-    //     },
-    //     { path: '/register', component: CoachRegistration, meta: { requiresAuth: true } },
-    //     { path: '/requests', component: RequestsRecibed, meta: { requiresAuth: true } },
-    //     { path: '/auth', component: UserAuth, meta: { requiresUnauth: true } },
-    //     { path: '/:notFound(.*)', component: NotFound },
   ]
 })
 
