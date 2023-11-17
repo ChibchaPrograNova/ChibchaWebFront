@@ -62,10 +62,11 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
+let id = 5
 
 const router = useRouter()
 function redirectToSearch() {
-    router.replace({ name: 'registerView' })
+    router.replace({ name: 'userInfo', params: { id: id } })
 }
 
 </script>

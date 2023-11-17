@@ -55,7 +55,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button>Añadir nuevo distribuidor</button>
+            <button @click="redirectToNew">Añadir nuevo distribuidor</button>
         </div>
     </div>
 </template>
@@ -64,11 +64,15 @@
 import { useRouter } from 'vue-router';
 
 
+let id = 5
+
 const router = useRouter()
 function redirectToSearch() {
-    router.replace({ name: 'userInfo' })
+    router.replace({ name: 'distributorInfo', params: { id: id } })
 }
-
+function redirectToNew() {
+    router.replace({ name: 'distributorForm' })
+}
 </script>
 
 

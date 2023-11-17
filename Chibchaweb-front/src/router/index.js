@@ -21,6 +21,7 @@ const router = createRouter({
     },
     {
       path: '/distribuidorInfo/:id',
+      name: 'distributorInfo',
       component: () => import('../pages/Admin/distributor/distributorInfo.vue'),
       props: true
     },
@@ -36,6 +37,7 @@ const router = createRouter({
     },
     {
       path: '/employeeInfo/:id',
+      name: 'employeeInfo',
       component: () => import('../pages/Admin/employee/employeeInfo.vue'),
       props: true
     },
@@ -46,6 +48,7 @@ const router = createRouter({
     },
     {
       path: '/userInfo/:id',
+      name: 'userInfo',
       component: () => import('../pages/Admin/user/userInfo.vue'),
       props: true
     },
@@ -114,8 +117,7 @@ const router = createRouter({
       path: '/vistaAyuda',
       name: 'ayuda',
       component: () => import('../pages/User/ticketView.vue')
-    }
-
+    },
   ]
 })
 

@@ -55,7 +55,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button> añadir nuevo Empleado</button>
+            <button @click="redirectToNew"> añadir nuevo Empleado</button>
         </div>
     </div>
 </template>
@@ -63,10 +63,14 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
+let id = 5
 
 const router = useRouter()
 function redirectToSearch() {
-    router.replace({ name: 'registerView' })
+    router.replace({ name: 'employeeInfo', params: { id: id } })
+}
+function redirectToNew() {
+    router.replace({ name: 'employeeForm'  })
 }
 
 </script>

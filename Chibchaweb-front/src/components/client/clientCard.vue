@@ -1,6 +1,6 @@
 <template>
     <h4>Nombre:</h4>
-    pepe
+    Juan Vargas
     <h4>Documento:</h4>
     CC.1000394029
     <h4>Correo:</h4>
