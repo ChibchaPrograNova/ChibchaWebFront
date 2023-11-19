@@ -3,11 +3,13 @@
         <div class="div1">
             <BaseCard>
                 <h1>Info Usuario:</h1>
-                <h3>Nombre</h3> Juan Vargas
-                <h3>Nit</h3> 100000293928
-                <h3>Dirección</h3> Cr 25 #12-54
-                <h3>Cantidad de dominios</h3> 250
-                <h3>Categoria </h3> PREMIUM
+                <h3>Nombre</h3> {{ data.name }}
+                <h3>Nit</h3> {{ data.nit }}
+                <h3>Dirección</h3> {{ data.address }}
+                <h3>Correo</h3> {{ data.mail }}
+                <h3>Cantidad de dominios</h3> {{ data.q_domains }}
+                <h3>Categoria </h3> {{ data.category }}
+                <h3>Cuenta bancaria </h3> {{ data.bank_account }}
             </BaseCard>
 
         </div>
@@ -20,11 +22,23 @@
 
 <script setup>
 import BaseCard from '../../../components/UI/BaseCard.vue';
-
+import { ref, onMounted } from 'vue';
 let idClient = defineProps(['id']);
+const data = ref([])
 
-function redirectToNew(){
-    
+onMounted(async () => {
+    try {
+        const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/?id=${idClient.id}`);
+        const result = await response.json();
+        data.value = result;
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+    }
+});
+
+
+function redirectToNew() {
+
 }
 </script>
 

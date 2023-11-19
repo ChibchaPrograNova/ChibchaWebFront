@@ -1,14 +1,21 @@
 <template>
     <h4>Nombre:</h4>
-    Juan Vargas
+    {{ clientStore.name }}
     <h4>Documento:</h4>
-    CC.1000394029
+    {{ clientStore.identification }}
     <h4>Correo:</h4>
-    PepeElCrack@gmail.com
+    {{ clientStore.mail }}
     <h4>Dirección:</h4>
-    KR 86 # 122
+    {{ clientStore.address }}
     <h4>País:</h4>
+    {{ clientStore.country }}
 </template>
+
+<script setup>
+import { useClientStore } from '../../stores/client'
+const clientStore = useClientStore()
+
+</script>
 
 <style scoped>
 h4 {

@@ -3,7 +3,7 @@
         <h3>Registrate</h3>
         <div class="form-container">
             <BaseCard>
-                <TheForm :form-config="formConfig1" :button-text="'Registrar'" @submit-event="login" />
+                <TheForm :form-config="formConfig1" :button-text="'Registrar'" @submit-event="register" />
             </BaseCard>
         </div>
     </div>
@@ -13,25 +13,17 @@
 import BaseCard from '../../components/UI/BaseCard.vue';
 import TheForm from '../../components/UI/TheForm.vue';
 import { useRouter } from 'vue-router';
+import { useClientStore } from '../../stores/client'
 let formConfig1 = [
     {
         type: 'text',
-        name: 'Username',
+        name: 'name',
         label: 'Nombre Completo',
         placeholder: 'Ingresa tu nombre completo',
     },
     {
-        type: 'select',
-        name: 'tipoDoc',
-        label: 'Tipo Documento',
-        options: [
-            { value: 'CC', label: 'Cédula de Ciudadanía' },
-            { value: 'CE', label: 'Cédula Extranjería' },
-            { value: 'NIT', label: 'Número de Identificación Tributaria' }],
-    },
-    {
         type: 'number',
-        name: 'numeroDocumento',
+        name: 'identification',
         label: 'Número de Documento',
         placeholder: 'Ingresa tu número de documento',
     },
@@ -43,9 +35,15 @@ let formConfig1 = [
     },
     {
         type: 'text',
-        name: 'email',
+        name: 'mail',
         label: 'Correo',
         placeholder: 'Ingresa tu Correo Electrónico',
+    },
+    {
+        type: 'number',
+        name: 'age',
+        label: 'Edad',
+        placeholder: 'Ingresa tu Edad',
     },
     {
         type: 'select',
@@ -53,19 +51,33 @@ let formConfig1 = [
         label: 'País',
         options: [{ value: 'colombia', label: 'Colombia' }, { value: 'Other', label: 'Otros Paises' }],
     },
-    {
-        type: 'password',
-        name: 'password',
-        label: 'Contraseña',
-        placeholder: 'Ingresa tu contraseña',
-    },
+    // {
+    //     type: 'password',
+    //     name: 'password',
+    //     label: 'Contraseña',
+    //     placeholder: 'Ingresa tu contraseña',
+    // },
 ]
 const router = useRouter()
 function redirectToSearch() {
     router.replace({ name: 'planView' })
 }
-function login(newUser) {
-    console.log(newUser)
+
+const clientStore = useClientStore()
+function register(newUser) {
+    fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+    })
+    clientStore.name = newUser.name
+    clientStore.identification = newUser.identification
+    clientStore.address = newUser.address
+    clientStore.mail = newUser.mail
+    clientStore.age = newUser.age
+    clientStore.country = newUser.country
     redirectToSearch()
     //this.$router.replace("/infoEmployee");
 }

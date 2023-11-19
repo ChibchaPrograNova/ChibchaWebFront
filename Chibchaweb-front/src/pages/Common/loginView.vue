@@ -12,9 +12,14 @@
 <script setup>
 import BaseCard from '../../components/UI/BaseCard.vue';
 import TheForm from '../../components/UI/TheForm.vue';
+import { useLoginStore } from '../../stores/login'
+import { useClientStore } from '../../stores/client'
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const router = useRouter()
+const loginStore = useLoginStore()
+const clientStore = useClientStore()
 
 let formConfig1 = [
     {
@@ -28,9 +33,9 @@ let formConfig1 = [
     },
     {
         type: 'text',
-        name: 'Username',
-        label: 'Nombre de Usuario',
-        placeholder: 'Ingresa tu nombre de usuario',
+        name: 'email',
+        label: 'Correo Electronico',
+        placeholder: 'Ingresa tu Correo',
     },
     {
         type: 'password',
@@ -40,13 +45,60 @@ let formConfig1 = [
     },
 ]
 
-function login(user) {
+async function login(user) {
+    loginStore.isLoggedIn = true
     if (user.type == 'CL') {
-        router.replace({ name: 'userDashboard' })
+        await verifyUser(user.email)
+        console.log(usuario.value)
+        if (dataUser.value !== 404) {
+            clientStore.name = usuario.value.name
+            clientStore.identification = usuario.value.identification
+            clientStore.address = usuario.value.address
+            clientStore.mail = usuario.value.mail
+            clientStore.age = usuario.value.age
+            clientStore.country = usuario.value.country
+            router.replace({ name: 'userDashboard' })
+        } else {
+            alert('Error al iniciar sesion, Verifique sus datos')
+        }
     } else if (user.type == 'EM') {
-        router.replace({ name: 'mainDashboard' })
+        await verifyEmployee(user.email)
+        if (dataUser.value !== 404) {
+            router.replace({ name: 'mainDashboard' })
+        } else {
+            alert('Error al iniciar sesion, Verifique sus datos')
+        }
     } else {
-        router.replace({ name: 'adminDashboard' })
+        await verifyAdmin(user.email)
+        if (dataUser.value !== 404) {
+            router.replace({ name: 'adminDashboard' })
+        } else {
+            alert('Error al iniciar sesion, Verifique sus datos')
+        }
+    }
+}
+
+const dataUser = ref('')
+const usuario = ref({})
+async function verifyUser(email) {
+    const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/?mail=${email}`);
+    const result = response.status;
+    usuario.value = await response.json()
+    dataUser.value = result;
+}
+
+async function verifyEmployee(email) {
+    const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/?mail=${email}`);
+    const result = response.status;
+    dataUser.value = result;
+}
+
+async function verifyAdmin(email) {
+    let sudo = 'admin@ChibchaWeb.com'
+    if (email != sudo) {
+        dataUser.value = 404
+    } else {
+        dataUser.value = 200
     }
 }
 

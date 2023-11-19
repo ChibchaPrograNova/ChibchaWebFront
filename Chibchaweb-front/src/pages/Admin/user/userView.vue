@@ -13,44 +13,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>DaBaby</td>
-                        <td>CC.1000508039</td>
+                    <tr v-for="item in data" :key="item.id">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.identification }}</td>
+                        <td>{{ item.mail }}</td>
                         <td>
-                            ayaya@gmail.com
-                        </td>
-                        <td>
-                            <button @click="redirectToSearch">Ver Mas</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>DaBaby</td>
-                        <td>CC.1000508039</td>
-                        <td>
-                            ayaya@gmail.com
-                        </td>
-                        <td>
-                            <button @click="redirectToSearch">Ver Mas</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>DaBaby</td>
-                        <td>CC.1000508039</td>
-                        <td>
-                            ayaya@gmail.com
-                        </td>
-                        <td>
-                            <button @click="redirectToSearch">Ver Mas</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>DaBaby</td>
-                        <td>CC.1000508039</td>
-                        <td>
-                            ayaya@gmail.com
-                        </td>
-                        <td>
-                            <button @click="redirectToSearch">Ver Mas</button>
+                            <button @click="redirectToSearch(item.id)">Ver Mas</button>
                         </td>
                     </tr>
                 </tbody>
@@ -61,13 +29,24 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-
-let id = 5
+import { ref, onMounted } from 'vue';
 
 const router = useRouter()
-function redirectToSearch() {
+function redirectToSearch(id) {
     router.replace({ name: 'userInfo', params: { id: id } })
 }
+
+const data = ref([])
+
+onMounted(async () => {
+    try {
+        const response = await fetch('https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/');
+        const result = await response.json();
+        data.value = result;
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+    }
+});
 
 </script>
 

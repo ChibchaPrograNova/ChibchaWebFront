@@ -3,7 +3,7 @@
         <h3>Registar nuevo distribuidor</h3>
         <div class="form-container">
             <BaseCard>
-                <TheForm :form-config="formConfig1" :button-text="'Guardar'" @submit-event="login" />
+                <TheForm :form-config="formConfig1" :button-text="'Guardar'" @submit-event="register" />
             </BaseCard>
         </div>
     </div>
@@ -16,41 +16,47 @@ import { useRouter } from 'vue-router';
 let formConfig1 = [
     {
         type: 'text',
-        name: 'Username',
+        name: 'name',
         label: 'Nombre Completo',
-        placeholder: 'Ingresa tu nombre completo',
+        placeholder: 'Ingrese el nombre completo',
     },
     {
         type: 'number',
-        name: 'numeroDocumento',
+        name: 'nit',
         label: 'Número de Documento NIT',
-        placeholder: 'Ingresa tu número de NIT',
+        placeholder: 'Ingresa el número de NIT',
     },
     {
         type: 'text',
         name: 'address',
         label: 'Dirección',
-        placeholder: 'Ingresa tu Dirección',
+        placeholder: 'Ingresa la Dirección',
     },
     {
         type: 'text',
-        name: 'email',
+        name: 'mail',
         label: 'Correo',
-        placeholder: 'Ingresa tu Correo Electrónico',
+        placeholder: 'Ingresa el Correo Electrónico',
     },
     {
-        type: 'password',
-        name: 'password',
-        label: 'Contraseña',
-        placeholder: 'Ingresa tu contraseña',
+        type: 'number',
+        name: 'bank_account',
+        label: 'Cuenta Bancaria',
+        placeholder: 'Ingrese su Cuenta Bancaria',
     },
 ]
 const router = useRouter()
 function redirectToSearch() {
     router.replace({ name: 'distributorView' })
 }
-function login(newUser) {
-    console.log(newUser)
+function register(newUser) {
+    fetch("https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+    })
     redirectToSearch()
     //this.$router.replace("/infoEmployee");
 }

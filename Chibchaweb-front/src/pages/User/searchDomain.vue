@@ -16,18 +16,18 @@
                         <td>{{ paginaNombre.nombreDominio }}.nz</td>
                         <td>Alibaba</td>
                         <td>
-                            <button @click="redirectToSearch">Comprar!</button>
+                            <button @click="redirectToSearch('Alibaba')">Comprar!</button>
                         </td>
                     </tr>
                     <tr>
                         <td>{{ paginaNombre.nombreDominio }}.com</td>
                         <td>Amazon</td>
-                        <td><button @click="redirectToSearch">Comprar!</button></td>
+                        <td><button @click="redirectToSearch('Amazon')">Comprar!</button></td>
                     </tr>
                     <tr>
                         <td>{{ paginaNombre.nombreDominio }}.gg</td>
                         <td>Azure</td>
-                        <td><button @click="redirectToSearch">Comprar</button></td>
+                        <td><button @click="redirectToSearch('Azure')">Comprar</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -37,13 +37,26 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useClientStore } from '../../stores/client'
+import { useBuyStore } from '../../stores/buy'
 
 let paginaNombre = defineProps(['nombreDominio']);
 
 const router = useRouter()
-function redirectToSearch() {
-    router.replace({ name: 'registerView' })
+const clientStore = useClientStore()
+const buyStore = useBuyStore()
+
+function redirectToSearch(distributor) {
+    if (clientStore.name != '') {
+        buyStore.domainName = paginaNombre.nombreDominio
+        buyStore.distribuidorName = distributor
+        router.replace({ name: 'planView' })
+
+    } else {
+        router.replace({ name: 'registerView' })
+    }
 }
+
 
 </script>
 

@@ -5,19 +5,27 @@
             <div>
                 <h3>Detalles de cliente</h3>
                 <p>Nombre del Cliente</p>
+                {{ clientStore.name }}
                 <p>Correo electrónico</p>
+                {{ clientStore.mail }}
             </div>
             <div>
                 <h3>Detalles de Producto</h3>
                 <p>Nombre del Dominio</p>
+                {{ buyStore.domainName }}
                 <p>Distribuidor</p>
+                {{ buyStore.distribuidorName }}
                 <p>Paquete</p>
+                {{ buyStore.paquete }}
             </div>
             <div>
                 <h3>Detalles de Compra</h3>
                 <p>Referencia de la compra</p>
+                {{ clientStore.name }}
                 <p>Método de Pago</p>
+                Tarjeta
                 <p>Valor de la compra</p>
+                {{ buyStore.precioDiscount }}
             </div>
             <div class="buttonContainer">
                 <button @click="redirectToDashboard">Regresar al Dashboard Principal</button>
@@ -29,10 +37,14 @@
 <script setup>
 import BaseCard from '../../components/UI/BaseCard.vue';
 import { useRouter } from 'vue-router';
+import { useClientStore } from '../../stores/client';
+import { useBuyStore } from '../../stores/buy';
 
 const router = useRouter()
-function redirectToDashboard(){
-    router.replace({ name: 'userDashboard'})
+const clientStore = useClientStore()
+const buyStore = useBuyStore()
+function redirectToDashboard() {
+    router.replace({ name: 'userDashboard' })
 }
 
 </script>
@@ -78,5 +90,10 @@ h3 {
     font-weight: bold;
     text-align: left;
     font-size: 30px;
+}
+
+p {
+    font-weight: bold;
+    font-size: 20px;
 }
 </style>

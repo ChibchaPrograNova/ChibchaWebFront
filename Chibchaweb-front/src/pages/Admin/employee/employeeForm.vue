@@ -3,7 +3,7 @@
         <h3>Registrar nuevo empleado</h3>
         <div class="form-container">
             <BaseCard>
-                <TheForm :form-config="formConfig1" :button-text="'Guardar'" @submit-event="login" />
+                <TheForm :form-config="formConfig1" :button-text="'Guardar'" @submit-event="register" />
             </BaseCard>
         </div>
     </div>
@@ -16,36 +16,33 @@ import { useRouter } from 'vue-router';
 let formConfig1 = [
     {
         type: 'text',
-        name: 'Username',
+        name: 'name',
         label: 'Nombre Completo',
-        placeholder: 'Ingresa tu nombre completo',
-    },
-    {
-        type: 'select',
-        name: 'tipoDoc',
-        label: 'Tipo Documento',
-        options: [
-            { value: 'CC', label: 'Cédula de Ciudadanía' },
-            { value: 'CE', label: 'Cédula Extranjería' },
-            { value: 'NIT', label: 'Número de Identificación Tributaria' }],
+        placeholder: 'Ingresa el nombre completo',
     },
     {
         type: 'number',
-        name: 'numeroDocumento',
+        name: 'identification',
         label: 'Número de Documento',
-        placeholder: 'Ingresa tu número de documento',
+        placeholder: 'Ingresa el número de documento',
     },
     {
         type: 'text',
         name: 'address',
         label: 'Dirección',
-        placeholder: 'Ingresa tu Dirección',
+        placeholder: 'Ingresa la Dirección',
     },
     {
         type: 'text',
-        name: 'email',
+        name: 'mail',
         label: 'Correo',
-        placeholder: 'Ingresa tu Correo Electrónico',
+        placeholder: 'Ingresa el Correo Electrónico',
+    },
+    {
+        type: 'number',
+        name: 'age',
+        label: 'Edad',
+        placeholder: 'Ingresa la edad',
     },
     {
         type: 'select',
@@ -55,7 +52,7 @@ let formConfig1 = [
     },
     {
         type: 'select',
-        name: 'cargo',
+        name: 'ocuppation',
         label: 'Cargo',
         options: [{ value: 'SC', label: 'Soporte Conectividad' },
         { value: 'SP', label: 'Soporte Pagos' },
@@ -64,18 +61,25 @@ let formConfig1 = [
         ],
     },
     {
-        type: 'password',
-        name: 'password',
-        label: 'Contraseña',
-        placeholder: 'Ingresa tu contraseña',
+        type: 'number',
+        name: 'salary',
+        label: 'Salario',
+        placeholder: 'Ingresa el salario del empleado',
     },
 ]
 const router = useRouter()
 function redirectToSearch() {
     router.replace({ name: 'employeeView' })
 }
-function login(newUser) {
-    console.log(newUser)
+
+function register(newUser) {
+    fetch("https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+    })
     redirectToSearch()
     //this.$router.replace("/infoEmployee");
 }

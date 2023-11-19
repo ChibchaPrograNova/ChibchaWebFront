@@ -6,11 +6,24 @@
         </RouterLink>
 
         <div class="actionRow">
-            <RouterLink to="login">Iniciar sesion</RouterLink>
-            <RouterLink to="register">Registrar</RouterLink>
+            <RouterLink to="home" v-if="loginStore.isLoggedIn" @click="changeValue">Cerrar Sesión</RouterLink>
+            <RouterLink to="login" v-else>Iniciar Sesión</RouterLink>
+            <RouterLink to="register" v-if="!loginStore.isLoggedIn">Registrar</RouterLink>
         </div>
     </div>
 </template>
+
+<script setup>
+import { useLoginStore } from '../../stores/login'
+
+const loginStore = useLoginStore()
+
+function changeValue() {
+    loginStore.isLoggedIn = !loginStore.isLoggedIn
+}
+
+
+</script>
 
 <style scoped>
 .headerWrapper {

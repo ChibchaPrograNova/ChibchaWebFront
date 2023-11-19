@@ -24,7 +24,8 @@
                 </select>
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(30000, tipoPagoOro) }}</p>
                 <p>Precio con Descuento = ${{ calcularTotal(30000, tipoPagoOro) }}</p>
-                <Button @click="redirectToPayment">Comprar</Button>
+                <Button
+                    @click="redirectToPayment('ChibchaWeb Oro', calcularTotalSinDescuento(30000, tipoPagoOro), calcularTotal(30000, tipoPagoOro))">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard">
                 <h2 class="tarjeta-titulo">Plan Platino</h2>
@@ -46,7 +47,8 @@
                 </select>
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(40000, tipoPagoPlatino) }}</p>
                 <p>Precio con Descuento = ${{ calcularTotal(40000, tipoPagoPlatino) }}</p>
-                <Button @click="redirectToPayment">Comprar</Button>
+                <Button
+                    @click="redirectToPayment('ChibchaWeb Platino', calcularTotalSinDescuento(40000, tipoPagoPlatino), calcularTotal(40000, tipoPagoPlatino))">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard notFeatured">
                 <h2 class="tarjeta-titulo">Plan Plata</h2>
@@ -67,7 +69,8 @@
                 </select>
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(20000, tipoPagoSilver) }}</p>
                 <p>Precio con Descuento = ${{ calcularTotal(20000, tipoPagoSilver) }}</p>
-                <Button @click="redirectToPayment">Comprar</Button>
+                <Button
+                    @click="redirectToPayment('ChibchaWeb Plata', calcularTotalSinDescuento(20000, tipoPagoSilver), calcularTotal(20000, tipoPagoSilver))">Comprar</Button>
             </BaseCard>
         </div>
     </div>
@@ -77,9 +80,61 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import BaseCard from '../../components/UI/BaseCard.vue';
+import { useBuyStore } from '../../stores/buy';
 
 const router = useRouter()
-function redirectToPayment() {
+const buyStore = useBuyStore()
+
+function redirectToPayment(paquete, precio, precioDescuento) {
+    buyStore.precio = precio
+    buyStore.precioDiscount = precioDescuento
+    buyStore.paquete = paquete
+    if (paquete === 'ChibchaWeb Plata') {
+        switch (tipoPagoSilver.value) {
+            case '0':
+                buyStore.plan = 'Mensual'
+                break;
+            case '1':
+                buyStore.plan = 'Trimestral'
+                break;
+            case '2':
+                buyStore.plan = 'Semestral'
+                break;
+            case '3':
+                buyStore.plan = 'Anual'
+                break;
+        }
+    } else if (paquete === 'ChibchaWeb Oro') {
+        switch (tipoPagoOro.value) {
+            case '0':
+                buyStore.plan = 'Mensual'
+                break;
+            case '1':
+                buyStore.plan = 'Trimestral'
+                break;
+            case '2':
+                buyStore.plan = 'Semestral'
+                break;
+            case '3':
+                buyStore.plan = 'Anual'
+                break;
+        }
+    } else {
+        switch (tipoPagoPlatino.value) {
+            case '0':
+                buyStore.plan = 'Mensual'
+                break;
+            case '1':
+                buyStore.plan = 'Trimestral'
+                break;
+            case '2':
+                buyStore.plan = 'Semestral'
+                break;
+            case '3':
+                buyStore.plan = 'Anual'
+                break;
+        }
+    }
     router.replace({ name: 'paymentView' })
 }
 

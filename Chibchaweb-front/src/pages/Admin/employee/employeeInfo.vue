@@ -3,13 +3,14 @@
         <div class="div1">
             <BaseCard>
                 <h1>Info Empleado</h1>
-                <h3>Nombre</h3> Juana Vanegas
-                <h3>Cédula</h3> 1025123598
-                <h3>Dirección</h3> Cr 24 #2-43
-                <h3>Correo Electrónico</h3> vanejua@gmail.com
-                <h3>Cargo</h3> Soporte Conectividad
-                <h3> País</h3> Colombia
-                <h3>Sueldo</h3>$2'000.000
+                <h3>Nombre</h3> {{ data.name }}
+                <h3>Cédula</h3> {{ data.identification }}
+                <h3>Dirección</h3> {{ data.address }}
+                <h3>Edad</h3> {{ data.age }}
+                <h3>País</h3> {{ data.country }}
+                <h3>Correo Electrónico</h3> {{ data.mail }}
+                <h3>Cargo</h3> {{ data.occupation }}
+                <h3>Sueldo</h3>{{ data.salary }}
             </BaseCard>
 
         </div>
@@ -22,8 +23,23 @@
 
 <script setup>
 import BaseCard from '../../../components/UI/BaseCard.vue';
+import { ref, onMounted } from 'vue';
 
 let idEmployee = defineProps(['id']);
+
+
+const data = ref([])
+
+onMounted(async () => {
+    try {
+        const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/?id=${idEmployee.id}`);
+        const result = await response.json();
+        data.value = result;
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+    }
+});
+
 </script>
 
 <style scoped>

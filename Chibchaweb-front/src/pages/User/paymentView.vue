@@ -16,12 +16,17 @@
                 <h2>Resumen de compra</h2>
                 <BaseCard class="cards">
                     <p>Nombre del Dominio: </p>
+                    {{ buyStore.domainName }}
                     <p>Distribuidor del dominio</p>
+                    {{ buyStore.distribuidorName }}
                     <p>Paquete: </p>
+                    {{ buyStore.paquete }}
                     <p>Plan de pago: </p>
+                    {{ buyStore.plan }}
                     <p>Precio: </p>
-                    <p>Descuento: </p>
+                    {{ buyStore.precio }}
                     <p>Total a pagar: </p>
+                    {{ buyStore.precioDiscount }}
                     <Button :disabled="isDisabled" @click="redirectToResult" :class="{ 'disabled': isDisabled }">Comprar
                     </Button>
                 </BaseCard>
@@ -37,9 +42,11 @@ import CardValidator from '../../components/client/cardValidator.vue';
 import ClientCard from '../../components/client/clientCard.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useBuyStore } from '../../stores/buy';
 
 
 let isDisabled = ref(true)
+const buyStore = useBuyStore()
 
 function activateButton() {
     isDisabled.value = !isDisabled.value
@@ -96,5 +103,10 @@ h3 {
     font-weight: 600;
     text-align: center;
     font-size: 50px;
+}
+
+p {
+    font-weight: bold;
+    font-size: 20px;
 }
 </style>
