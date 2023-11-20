@@ -4,7 +4,7 @@
         <h3>Soluciones de hosting fiables y veloces para tu sitio web o aplicación.
             Potencia tu presencia en línea con nuestro servicio de primera calidad.</h3>
 
-        <h1>Nombre de tu futura pagina</h1>
+        <h1>Nombre de tu futura página</h1>
         <input type="text" class="srcInput" v-model="pagina">
         <button @click="redirectToSearch">Empecemos!</button>
     </div>

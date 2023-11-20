@@ -1,9 +1,9 @@
 <template>
     <div>
-        <h3>Registrar nuevo empleado</h3>
+        <h3>{{ titulo }}</h3>
         <div class="form-container">
             <BaseCard>
-                <TheForm :form-config="formConfig1" :button-text="'Guardar'" @submit-event="register" />
+                <TheForm :form-config="formConfig1" :button-text="textoBoton" @submit-event="register" />
             </BaseCard>
         </div>
     </div>
@@ -13,6 +13,9 @@
 import BaseCard from '../../../components/UI/BaseCard.vue';
 import TheForm from '../../../components/UI/TheForm.vue';
 import { useRouter } from 'vue-router';
+import { useEmployeeStore } from '../../../stores/employee';
+import { ref, onBeforeMount } from 'vue';
+
 let formConfig1 = [
     {
         type: 'text',
@@ -52,12 +55,12 @@ let formConfig1 = [
     },
     {
         type: 'select',
-        name: 'ocuppation',
+        name: 'occupation',
         label: 'Cargo',
-        options: [{ value: 'SC', label: 'Soporte Conectividad' },
-        { value: 'SP', label: 'Soporte Pagos' },
-        { value: 'SE', label: 'Soporte ENV' },
-        { value: 'SPR', label: 'Soporte Privacidad' },
+        options: [{ value: 'Conectividad', label: 'Soporte Conectividad' },
+        { value: 'Pagos', label: 'Soporte Pagos' },
+        { value: 'Env', label: 'Soporte ENV' },
+        { value: 'Privacidad', label: 'Soporte Privacidad' },
         ],
     },
     {
@@ -66,24 +69,55 @@ let formConfig1 = [
         label: 'Salario',
         placeholder: 'Ingresa el salario del empleado',
     },
+    {
+        type: 'password',
+        name: 'password',
+        label: 'Contraseña',
+        placeholder: 'Ingresa la contraseña',
+    },
 ]
 const router = useRouter()
 function redirectToSearch() {
     router.replace({ name: 'employeeView' })
 }
-
-function register(newUser) {
-    fetch("https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-    })
-    redirectToSearch()
-    //this.$router.replace("/infoEmployee");
+const employeeStore = useEmployeeStore()
+async function register(newUser) {
+    if (isEdit.value == false) {
+        await fetch("https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        })
+        redirectToSearch()
+    } else {
+        await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/?id=${id.value}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        })
+        employeeStore.employee = {}
+        redirectToSearch()
+    }
 }
 
+const textoBoton = ref('Registrar')
+const titulo = ref('Registrar un empleado')
+const id = ref('')
+const isEdit = ref(false)
+
+onBeforeMount(async () => {
+    const employeeStore = useEmployeeStore()
+    if (employeeStore.employee.name !== '') {
+        titulo.value = 'Editar Empleado'
+        textoBoton.value = 'Editar'
+        id.value = employeeStore.employee.id
+        isEdit.value = true
+    }
+});
 </script>
 
 <style scoped>

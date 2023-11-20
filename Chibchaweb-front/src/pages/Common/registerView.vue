@@ -1,9 +1,9 @@
 <template>
     <div>
-        <h3>Registrate</h3>
+        <h3>{{ titulo }}</h3>
         <div class="form-container">
             <BaseCard>
-                <TheForm :form-config="formConfig1" :button-text="'Registrar'" @submit-event="register" />
+                <TheForm :form-config="formConfig1" :button-text="textoBoton" @submit-event="register" />
             </BaseCard>
         </div>
     </div>
@@ -13,7 +13,9 @@
 import BaseCard from '../../components/UI/BaseCard.vue';
 import TheForm from '../../components/UI/TheForm.vue';
 import { useRouter } from 'vue-router';
-import { useClientStore } from '../../stores/client'
+import { useClientStore } from '../../stores/client';
+import { useLoginStore } from '../../stores/login';
+import { ref, onBeforeMount } from 'vue';
 let formConfig1 = [
     {
         type: 'text',
@@ -40,6 +42,12 @@ let formConfig1 = [
         placeholder: 'Ingresa tu Correo Electrónico',
     },
     {
+        type: 'password',
+        name: 'password',
+        label: 'Contraseña',
+        placeholder: 'Ingresa tu Contraseña',
+    },
+    {
         type: 'number',
         name: 'age',
         label: 'Edad',
@@ -51,37 +59,56 @@ let formConfig1 = [
         label: 'País',
         options: [{ value: 'colombia', label: 'Colombia' }, { value: 'Other', label: 'Otros Paises' }],
     },
-    // {
-    //     type: 'password',
-    //     name: 'password',
-    //     label: 'Contraseña',
-    //     placeholder: 'Ingresa tu contraseña',
-    // },
 ]
 const router = useRouter()
-function redirectToSearch() {
+function redirectToPlan() {
     router.replace({ name: 'planView' })
+}
+function redirectToUserInfo() {
+    router.replace({ name: 'userView' })
 }
 
 const clientStore = useClientStore()
-function register(newUser) {
-    fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-    })
-    clientStore.name = newUser.name
-    clientStore.identification = newUser.identification
-    clientStore.address = newUser.address
-    clientStore.mail = newUser.mail
-    clientStore.age = newUser.age
-    clientStore.country = newUser.country
-    redirectToSearch()
-    //this.$router.replace("/infoEmployee");
-}
+const loginStore = useLoginStore()
+async function register(newUser) {
+    if (isEdit.value == false) {
+        await fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        })
+        clientStore.client = newUser
+        loginStore.isLoggedIn = true
+        redirectToPlan()
+    } else {
+        await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/?id=${id.value}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        })
+        clientStore.client = {}
+        redirectToUserInfo()
+    }
 
+}
+const textoBoton = ref('Registrar')
+const titulo = ref('Registrarse')
+const id = ref('')
+const isEdit = ref(false)
+
+onBeforeMount(async () => {
+    const clientStore = useClientStore()
+    if (clientStore.client.name !== '') {
+        titulo.value = 'Editar Usuario'
+        textoBoton.value = 'Editar'
+        id.value = clientStore.client.id
+        isEdit.value = true
+    }
+});
 </script>
 
 <style scoped>

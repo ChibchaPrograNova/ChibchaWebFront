@@ -1,17 +1,20 @@
 import { defineStore } from 'pinia';
 
-export const useClientStore = defineStore({
-  id: 'clientStore',
+export const useEmployeeStore = defineStore({
+  id: 'employeeStore',
   state: () => ({
-    client: {
+    employee: {
       id: '',
       name: '',
       identification: '',
       address: '',
       mail: '',
+      password:'',
       age: '',
       country: '',
-      plans: [],
+      occupation: '',
+      salary:'',
+      activate:true
     }
   }),
 });

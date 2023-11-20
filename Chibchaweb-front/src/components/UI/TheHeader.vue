@@ -6,6 +6,9 @@
         </RouterLink>
 
         <div class="actionRow">
+            <RouterLink to="/userDashboard" v-if="loginStore.type == 'user'">🏠</RouterLink>
+            <RouterLink to="/mainDashboard" v-if="loginStore.type == 'emp'">🏠</RouterLink>
+            <RouterLink to="/adminDashboard" v-if="loginStore.type == 'adm'">🏠</RouterLink>
             <RouterLink to="home" v-if="loginStore.isLoggedIn" @click="changeValue">Cerrar Sesión</RouterLink>
             <RouterLink to="login" v-else>Iniciar Sesión</RouterLink>
             <RouterLink to="register" v-if="!loginStore.isLoggedIn">Registrar</RouterLink>
@@ -20,6 +23,7 @@ const loginStore = useLoginStore()
 
 function changeValue() {
     loginStore.isLoggedIn = !loginStore.isLoggedIn
+    loginStore.type = ''
 }
 
 

@@ -4,5 +4,6 @@ export const useLoginStore = defineStore({
   id: 'loginStore',
   state: () => ({
     isLoggedIn: false,
+    type: ''
   }),
 });

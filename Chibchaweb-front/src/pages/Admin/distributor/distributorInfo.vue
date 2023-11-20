@@ -10,11 +10,12 @@
                 <h3>Cantidad de dominios</h3> {{ data.q_domains }}
                 <h3>Categoria </h3> {{ data.category }}
                 <h3>Cuenta bancaria </h3> {{ data.bank_account }}
+                <h3>Estado </h3> {{ data.activate ? 'Activo' : 'Desactivado' }}
             </BaseCard>
 
         </div>
         <div class="div2">
-            <button>Desactivar Cuenta</button>
+            <button @click="desactivateAccount">Desactivar Cuenta</button>
             <button @click="redirectToNew">Editar Datos Personales</button>
         </div>
     </div>
@@ -23,22 +24,44 @@
 <script setup>
 import BaseCard from '../../../components/UI/BaseCard.vue';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useDistributorStore } from '../../../stores/distributor';
 let idClient = defineProps(['id']);
 const data = ref([])
 
 onMounted(async () => {
+    const distributorStore = useDistributorStore()
     try {
         const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/?id=${idClient.id}`);
         const result = await response.json();
         data.value = result;
+        distributorStore.distributor = result
     } catch (error) {
         console.error('Error al cargar los datos:', error);
     }
 });
 
+async function desactivateAccount() {
+    const response = {
+        activate: false
+    }
+    await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/?id=${data.value.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(response),
+    })
+    redirectToUserInfo()
+}
 
+const router = useRouter()
 function redirectToNew() {
+    router.replace({ name: 'distributorForm' })
+}
 
+function redirectToUserInfo() {
+    router.replace({ name: 'distributorView' })
 }
 </script>
 

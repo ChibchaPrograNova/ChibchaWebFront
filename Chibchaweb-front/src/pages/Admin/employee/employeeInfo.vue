@@ -11,12 +11,13 @@
                 <h3>Correo Electrónico</h3> {{ data.mail }}
                 <h3>Cargo</h3> {{ data.occupation }}
                 <h3>Sueldo</h3>{{ data.salary }}
+                <h3>Estado</h3>{{ data.activate ? 'Activo' : 'Desactivado'}}
             </BaseCard>
 
         </div>
         <div class="div2">
-            <button>Desactivar Cuenta</button>
-            <button>Editar Datos Personales</button>
+            <button @click="desactivateAccount" >Desactivar Cuenta</button>
+            <button @click="reditectToForm">Editar Datos Personales</button>
         </div>
     </div>
 </template>
@@ -24,6 +25,8 @@
 <script setup>
 import BaseCard from '../../../components/UI/BaseCard.vue';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useEmployeeStore } from '../../../stores/employee';
 
 let idEmployee = defineProps(['id']);
 
@@ -31,16 +34,41 @@ let idEmployee = defineProps(['id']);
 const data = ref([])
 
 onMounted(async () => {
+    const employeeStore = useEmployeeStore()
     try {
         const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/?id=${idEmployee.id}`);
         const result = await response.json();
         data.value = result;
+        employeeStore.employee = result
+
     } catch (error) {
         console.error('Error al cargar los datos:', error);
     }
 });
 
+async function desactivateAccount() {
+    const response = {
+        activate: false
+    }
+    await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/?id=${data.value.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(response),
+    })
+    redirectToUserInfo()
+}
+
+const router = useRouter()
+function redirectToUserInfo() {
+    router.replace({ name: 'employeeView' })
+}
+function reditectToForm() {
+    router.replace({ name: 'employeeForm' })
+}
 </script>
+
 
 <style scoped>
 body {

@@ -1,9 +1,9 @@
 <template>
     <div>
-        <h3>Registar nuevo distribuidor</h3>
+        <h3>{{ titulo }}</h3>
         <div class="form-container">
             <BaseCard>
-                <TheForm :form-config="formConfig1" :button-text="'Guardar'" @submit-event="register" />
+                <TheForm :form-config="formConfig1" :button-text="textoBoton" @submit-event="register" />
             </BaseCard>
         </div>
     </div>
@@ -13,6 +13,9 @@
 import BaseCard from '../../../components/UI/BaseCard.vue';
 import TheForm from '../../../components/UI/TheForm.vue';
 import { useRouter } from 'vue-router';
+import { useDistributorStore } from '../../../stores/distributor';
+import { ref, onBeforeMount } from 'vue';
+
 let formConfig1 = [
     {
         type: 'text',
@@ -44,22 +47,59 @@ let formConfig1 = [
         label: 'Cuenta Bancaria',
         placeholder: 'Ingrese su Cuenta Bancaria',
     },
+    {
+        type: 'select',
+        name: 'category',
+        label: 'Categoria',
+        options: [{ value: 'Básico', label: 'Básico' },
+        { value: 'Premium', label: 'Premium' },
+        ],
+    },
 ]
 const router = useRouter()
 function redirectToSearch() {
     router.replace({ name: 'distributorView' })
 }
-function register(newUser) {
-    fetch("https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-    })
-    redirectToSearch()
-    //this.$router.replace("/infoEmployee");
+
+const distributorStore = useDistributorStore()
+
+async function register(newUser) {
+    if (isEdit.value == false) {
+        await fetch("https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        })
+        redirectToSearch()
+    } else {
+        await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/?id=${id.value}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        })
+        redirectToSearch()
+        distributorStore.distributor = {}
+    }
 }
+
+const textoBoton = ref('Registrar')
+const titulo = ref('Registrar un distribuidor')
+const id = ref('')
+const isEdit = ref(false)
+
+onBeforeMount(async () => {
+    const distribuidorStore = useDistributorStore()
+    if (distribuidorStore.distributor.name !== '') {
+        titulo.value = 'Editar Distribuidor'
+        textoBoton.value = 'Editar'
+        id.value = distributorStore.distributor.id
+        isEdit.value = true
+    }
+});
 
 </script>
 

@@ -30,6 +30,9 @@
   
 <script>
 import FormBuilder from '../../helpers/FormBuilder';
+import { useClientStore } from '../../stores/client';
+import { useEmployeeStore } from '../../stores/employee';
+import { useDistributorStore } from '../../stores/distributor';
 
 export default {
     props: {
@@ -43,6 +46,28 @@ export default {
             formFields: [],
             formData: {},
         };
+    },
+    beforeMount() {
+        const clientStore = useClientStore()
+        const employeeStore = useEmployeeStore()
+        const distributorStore = useDistributorStore()
+        if (clientStore.client.name !== '') {
+            const propertiesToCopy = ['name', 'identification', 'address', 'age', 'mail', 'country', 'password'];
+            propertiesToCopy.forEach(property => {
+                this.formData[property] = clientStore.client[property];
+            });
+        } else if (employeeStore.employee.name !== '') {
+            const propertiesToCopy = ['name', 'identification', 'address', 'age', 'mail', 'country', 'password', 'occupation', 'salary'];
+            propertiesToCopy.forEach(property => {
+                this.formData[property] = employeeStore.employee[property];
+
+            });
+        } else if (distributorStore.distributor.name !== '') {
+            const propertiesToCopy = ['name', 'nit', 'address', 'mail', 'q_domains', 'category', 'bank_account'];
+            propertiesToCopy.forEach(property => {
+                this.formData[property] = distributorStore.distributor[property];
+            });
+        }
     },
     created() {
         if (this.formConfig) {
@@ -145,6 +170,4 @@ input[type="checkbox"] {
 input[type="checkbox"]:focus {
     outline: #4b5757 solid 1px;
 }
-
-
 </style>

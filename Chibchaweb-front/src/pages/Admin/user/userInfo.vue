@@ -10,12 +10,13 @@
                 <h3>Edad</h3> {{ data.age }}
                 <h3>Pais: </h3> {{ data.country }}
                 <h3>planes: </h3> {{ data.plans }}
+                <h3>Estado: </h3> {{ data.activate ? 'Activo' : 'Desactivado' }}
             </BaseCard>
 
         </div>
         <div class="div2">
-            <button>Desactivar Cuenta</button>
-            <button>Editar Datos Personales</button>
+            <button @click="desactivateAccount">Desactivar Cuenta</button>
+            <button @click="reditectToForm">Editar Datos Personales</button>
         </div>
     </div>
 </template>
@@ -23,18 +24,45 @@
 <script setup>
 import BaseCard from '../../../components/UI/BaseCard.vue';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useClientStore } from '../../../stores/client';
 let idClient = defineProps(['id']);
 const data = ref([])
 
 onMounted(async () => {
+    const clientStore = useClientStore()
     try {
         const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/?id=${idClient.id}`);
         const result = await response.json();
         data.value = result;
+        clientStore.client = result
     } catch (error) {
         console.error('Error al cargar los datos:', error);
     }
 });
+
+async function desactivateAccount() {
+    const response = {
+        activate: false
+    }
+    await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/?id=${data.value.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(response),
+    })
+    redirectToUserInfo()
+}
+
+const router = useRouter()
+function redirectToUserInfo() {
+    router.replace({ name: 'userView' })
+}
+
+function reditectToForm() {
+    router.replace({ name: 'registerView' })
+}
 </script>
 
 <style scoped>

@@ -47,7 +47,7 @@ const clientStore = useClientStore()
 const buyStore = useBuyStore()
 
 function redirectToSearch(distributor) {
-    if (clientStore.name != '') {
+    if (clientStore.client.name != '') {
         buyStore.domainName = paginaNombre.nombreDominio
         buyStore.distribuidorName = distributor
         router.replace({ name: 'planView' })

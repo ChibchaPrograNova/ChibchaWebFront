@@ -5,9 +5,9 @@
             <div>
                 <h3>Detalles de cliente</h3>
                 <p>Nombre del Cliente</p>
-                {{ clientStore.name }}
+                {{ clientStore.client.name }}
                 <p>Correo electrónico</p>
-                {{ clientStore.mail }}
+                {{ clientStore.client.mail }}
             </div>
             <div>
                 <h3>Detalles de Producto</h3>
@@ -21,7 +21,7 @@
             <div>
                 <h3>Detalles de Compra</h3>
                 <p>Referencia de la compra</p>
-                {{ clientStore.name }}
+                {{ clientStore.client.name }}
                 <p>Método de Pago</p>
                 Tarjeta
                 <p>Valor de la compra</p>

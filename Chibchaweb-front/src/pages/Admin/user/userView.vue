@@ -9,6 +9,7 @@
                         <th>Nombre</th>
                         <th>Identificacion</th>
                         <th>Correo Electronico</th>
+                        <th>Estado</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -17,6 +18,7 @@
                         <td>{{ item.name }}</td>
                         <td>{{ item.identification }}</td>
                         <td>{{ item.mail }}</td>
+                        <td>{{ item.activate ? 'Activo' : 'Desactivado' }}</td>
                         <td>
                             <button @click="redirectToSearch(item.id)">Ver Mas</button>
                         </td>

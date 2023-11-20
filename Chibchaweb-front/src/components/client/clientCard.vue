@@ -1,14 +1,14 @@
 <template>
     <h4>Nombre:</h4>
-    {{ clientStore.name }}
+    {{ clientStore.client.name }}
     <h4>Documento:</h4>
-    {{ clientStore.identification }}
+    {{ clientStore.client.identification }}
     <h4>Correo:</h4>
-    {{ clientStore.mail }}
+    {{ clientStore.client.mail }}
     <h4>Dirección:</h4>
-    {{ clientStore.address }}
+    {{ clientStore.client.address }}
     <h4>País:</h4>
-    {{ clientStore.country }}
+    {{ clientStore.client.country }}
 </template>
 
 <script setup>
