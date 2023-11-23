@@ -1,22 +1,19 @@
 <template>
     <div class="parent">
+
         <div class="div1">
+            <h1>Resolución de ticket</h1>
             <BaseCard class="panel">
-                <h1>Id</h1>
-                <h3>25</h3>
                 <h1>Fecha</h1>
-                <h3>02/23/2023</h3>
+                <h3>{{ ticketStore.ticket.h_entry }}</h3>
                 <h1>Asunto</h1>
-                <h3>La pagina No Carga</h3>
+                <h3>{{ ticketStore.ticket.affair }}</h3>
                 <h1>Nivel</h1>
-                <h3>Medio</h3>
+                <h3>{{ ticketStore.ticket.level }}</h3>
                 <h1>Descripcion</h1>
-                <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum</h3>
+                <h3>{{ ticketStore.ticket.description }}</h3>
+                <h1>ID de la persona</h1>
+                <h3>{{ ticketStore.ticket.client }}</h3>
             </BaseCard>
         </div>
         <div class="div2">
@@ -24,9 +21,9 @@
                 <img src="\src\assets\LogoApp.svg" class="logo">
                 <div class="info">
                     <h1>Nombre</h1>
-                    Pepe Sánchez
+                    {{ employeeStore.employee.name }}
                     <h1>Cargo</h1>
-                    Soporte Conectividad
+                    {{ 'Soporte ' + employeeStore.employee.occupation }}
 
                 </div>
 
@@ -48,8 +45,10 @@
 
 <script setup>
 import BaseCard from '../../components/UI/BaseCard.vue';
-
-let idClient = defineProps(['id']);
+import { useTicketStore } from '../../stores/ticket';
+import { useEmployeeStore } from '../../stores/employee';
+const ticketStore = useTicketStore()
+const employeeStore = useEmployeeStore()
 </script>
 
 <style scoped>
@@ -116,7 +115,7 @@ h3 {
 }
 
 .info {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

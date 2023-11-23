@@ -1,11 +1,11 @@
 <template>
     <div class="parent">
         <div class="div1">
+            <h1>Tickets</h1>
             <div class="panel">
                 <table>
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Fecha</th>
                             <th>Asunto</th>
                             <th>Nivel</th>
@@ -13,31 +13,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>25</td>
-                            <td>25/03/2023</td>
-                            <td>Problema con la conexión de la página</td>
-                            <td>Crítico</td>
+                        <tr v-for="item in data" :key="item.id">
+                            <td>{{ item.h_entry }}</td>
+                            <td>{{ item.affair }}</td>
+                            <td>{{ item.level }}</td>
                             <td>
-                                <button @click="redirectToCase">Ver más</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>25</td>
-                            <td>25/03/2023</td>
-                            <td>Problema con la conexión de la página</td>
-                            <td>Crítico</td>
-                            <td>
-                                <button @click="redirectToCase">Ver más</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>25</td>
-                            <td>25/03/2023</td>
-                            <td>Problema con la conexión de la página</td>
-                            <td>Crítico</td>
-                            <td>
-                                <button @click="redirectToCase">Ver más</button>
+                                <button @click="redirectToCase(item)">Ver más</button>
                             </td>
                         </tr>
                     </tbody>
@@ -45,26 +26,57 @@
             </div>
         </div>
         <div class="div2">
-            <img src="\src\assets\LogoApp.svg" class="logo">
-            <div class="info">
-                <h1>Nombre</h1>
-                Pepe Sánchez
-                <h1>Cargo</h1>
-                Soporte Conectividad
-            </div>
-
+            <Basecard>
+                <img src="\src\assets\LogoApp.svg" class="logo">
+                <div class="info">
+                    <h1>Nombre</h1>
+                    {{ employeeStore.employee.name }}
+                    <h1>Cargo</h1>
+                    {{ 'Soporte ' + employeeStore.employee.occupation }}
+                </div>
+            </Basecard>
         </div>
     </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue'
+import { useEmployeeStore } from '../../stores/employee';
+import { useTicketStore } from '../../stores/ticket'
+import Basecard from '../../components/ui/basecard.vue';
 
-let id = 5
+
 const router = useRouter()
-function redirectToCase() {
-    router.replace({ name: 'caseInfo', params: { id: id } })
+const employeeStore = useEmployeeStore()
+const ticketStore = useTicketStore()
+
+function redirectToCase(item) {
+    ticketStore.ticket = item
+    router.replace({ name: 'caseInfo' })
 }
+
+const data = ref({})
+onMounted(async () => {
+    try {
+        const response = await fetch('https://chibchawebback-production-e6e7.up.railway.app/Employees/Ticket/');
+        const result = await response.json();
+        data.value = result.filter(item => item.category === employeeStore.employee.occupation);
+        // Crear un objeto Date a partir de la cadena ISO 8601
+        for (let i in data.value) {
+            const fecha = new Date(data.value[i].h_entry);
+
+            // Formatear la fecha en un formato más legible
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
+            const fechaFormateada = fecha.toLocaleDateString('es-ES', options);
+            data.value[i].h_entry = fechaFormateada
+        }
+
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+    }
+});
+
 
 </script>
 
@@ -126,7 +138,7 @@ th {
 }
 
 .info {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

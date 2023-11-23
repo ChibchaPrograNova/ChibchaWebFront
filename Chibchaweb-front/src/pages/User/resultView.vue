@@ -39,14 +39,31 @@ import BaseCard from '../../components/UI/BaseCard.vue';
 import { useRouter } from 'vue-router';
 import { useClientStore } from '../../stores/client';
 import { useBuyStore } from '../../stores/buy';
+import { useDomainStore } from '../../stores/domain';
+import { onMounted } from 'vue';
 
 const router = useRouter()
 const clientStore = useClientStore()
 const buyStore = useBuyStore()
+const domainStore = useDomainStore()
 function redirectToDashboard() {
     router.replace({ name: 'userDashboard' })
 }
 
+onMounted(async () => {
+    const response = {
+        available: false,
+        id_Client: clientStore.client.id,
+        id_Distributor: buyStore.distribuidorName
+    }
+    await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Domain/?id=${domainStore.domain.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(response),
+    })
+});
 </script>
 
 <style scoped>

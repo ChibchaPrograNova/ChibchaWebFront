@@ -17,6 +17,7 @@
 import { ref } from 'vue';
 import BaseCard from '../../components/UI/BaseCard.vue';
 import TheForm from '../../components/UI/TheForm.vue';
+import { useClientStore } from '../../stores/client';
 let formConfig1 = [
     {
         type: 'text',
@@ -30,7 +31,6 @@ let formConfig1 = [
         label: 'Ingresa el número de la tarjeta de crédito',
         placeholder: 'Número de tarjeta',
     },
-
     {
         type: 'password',
         name: 'credit-card',
@@ -47,18 +47,19 @@ let formConfig1 = [
 const isValid = ref('')
 const cardType = ref('')
 const emit = defineEmits(['cardValid'])
+const clientStore = useClientStore()
 function validateCreditCard(datos) {
     let numeroTarjeta = String(datos.numeroCreditCard)
     console.log(numeroTarjeta)
     // Expresión regular para validar tarjeta de crédito
-    const creditCardRegex = /^(?!0000)(?!6666)(?!5555)(?!4444)(?!3333)(?!2222)(?!1111)(?!9999)(?!1234)(?!5678)(?!9876)(?!0101)(?!4321)([0-9]{4}-){3}[0-9]{4}|[0-9]{16}$/;
+    const creditCardRegex = /^(?!0000)(?!6666)(?!5555)(?!4444)(?!3333)(?!2222)(?!1111)(?!9999)(?!1234)(?!5678)(?!9876)(?!0101)(?!4321)([0-9]{4}-){3}[0-9]{4}|[0-9]{14}$/;
 
     // Realiza la validación
     isValid.value = creditCardRegex.test(numeroTarjeta.replace(/-/g, ''));
-    console.log(isValid)
+    console.log(isValid.value)
     // Determina el tipo de tarjeta
     cardType.value = detectCardType(numeroTarjeta);
-    if (isValid.value === true) {
+    if (isValid.value === true && datos.password === clientStore.client.password) {
         emit('cardValid')
     }
 }
@@ -67,7 +68,7 @@ function detectCardType(cardNumber) {
     const cardPatterns = {
         visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
         mastercard: /^5[1-5][0-9]{14}$/,
-        diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/
+        diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}/
         // Agrega más patrones según sea necesario
     };
 

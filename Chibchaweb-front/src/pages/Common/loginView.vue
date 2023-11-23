@@ -16,9 +16,11 @@ import { useLoginStore } from '../../stores/login'
 import { useClientStore } from '../../stores/client'
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import { useEmployeeStore } from '../../stores/employee';
 
 const router = useRouter()
 const loginStore = useLoginStore()
+const employeeStore = useEmployeeStore()
 const clientStore = useClientStore()
 
 let formConfig1 = [
@@ -58,6 +60,7 @@ async function login(user) {
     } else if (user.type == 'EM') {
         let response = await verifyEmployee(user.email, user.password)
         if (response) {
+
             router.replace({ name: 'mainDashboard' })
         } else {
             alert('Error al iniciar sesion, Verifique sus datos')
@@ -78,6 +81,7 @@ async function verifyUser(email, pass) {
     usuario.value = await response.json()
     if (usuario.value.password === pass && usuario.value.activate) {
         loginStore.type = 'user'
+        clientStore.client = usuario.value
         return true;
     }
     return false;
@@ -87,6 +91,7 @@ async function verifyEmployee(email, pass) {
     const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Employees/?mail=${email}`);
     usuario.value = await response.json()
     if (usuario.value.password === pass && usuario.value.activate) {
+        employeeStore.employee = usuario.value
         loginStore.type = 'emp'
         return true;
     }

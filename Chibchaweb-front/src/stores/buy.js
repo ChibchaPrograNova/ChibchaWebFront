@@ -9,5 +9,7 @@ export const useBuyStore = defineStore({
     plan: '',
     precio: '',
     precioDiscount: '',
+    date_start: '',
+    date_end: '',
   }),
 });

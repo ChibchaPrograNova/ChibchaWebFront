@@ -23,7 +23,9 @@
                     </tr>
                 </tbody>
             </table>
-            <button @click="redirectToNew">Añadir nuevo distribuidor</button>
+            <div class="actionButton">
+                <button @click="redirectToNew">Añadir nuevo distribuidor</button>
+            </div>
         </div>
     </div>
 </template>
@@ -132,5 +134,13 @@ button {
 button:hover,
 button:focus {
     background-color: #b0b087;
+}
+
+.actionButton {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
 }
 </style>

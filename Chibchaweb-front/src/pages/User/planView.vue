@@ -89,49 +89,76 @@ function redirectToPayment(paquete, precio, precioDescuento) {
     buyStore.precio = precio
     buyStore.precioDiscount = precioDescuento
     buyStore.paquete = paquete
+    const currentDate = new Date();
+    const futureDate = ref('')
+    buyStore.date_start = currentDate
     if (paquete === 'ChibchaWeb Plata') {
         switch (tipoPagoSilver.value) {
             case '0':
+                futureDate.value = addMonths(currentDate, 1);
                 buyStore.plan = 'Mensual'
+                buyStore.date_end = futureDate
                 break;
             case '1':
                 buyStore.plan = 'Trimestral'
+                futureDate.value = addMonths(currentDate, 3);
+                buyStore.date_end = futureDate
                 break;
             case '2':
                 buyStore.plan = 'Semestral'
+                futureDate.value = addMonths(currentDate, 6);
+                buyStore.date_end = futureDate
                 break;
             case '3':
                 buyStore.plan = 'Anual'
+                futureDate.value = addMonths(currentDate, 12);
+                buyStore.date_end = futureDate
                 break;
         }
     } else if (paquete === 'ChibchaWeb Oro') {
         switch (tipoPagoOro.value) {
             case '0':
                 buyStore.plan = 'Mensual'
+                futureDate.value = addMonths(currentDate, 1);
+                buyStore.date_end = futureDate
                 break;
             case '1':
                 buyStore.plan = 'Trimestral'
+                futureDate.value = addMonths(currentDate, 3);
+                buyStore.date_end = futureDate
                 break;
             case '2':
                 buyStore.plan = 'Semestral'
+                futureDate.value = addMonths(currentDate, 6);
+                buyStore.date_end = futureDate
                 break;
             case '3':
                 buyStore.plan = 'Anual'
+                futureDate.value = addMonths(currentDate, 12);
+                buyStore.date_end = futureDate
                 break;
         }
     } else {
         switch (tipoPagoPlatino.value) {
             case '0':
                 buyStore.plan = 'Mensual'
+                futureDate.value = addMonths(currentDate, 1);
+                buyStore.date_end = futureDate
                 break;
             case '1':
                 buyStore.plan = 'Trimestral'
+                futureDate.value = addMonths(currentDate, 3);
+                buyStore.date_end = futureDate
                 break;
             case '2':
                 buyStore.plan = 'Semestral'
+                futureDate.value = addMonths(currentDate, 6);
+                buyStore.date_end = futureDate
                 break;
             case '3':
                 buyStore.plan = 'Anual'
+                futureDate.value = addMonths(currentDate, 12);
+                buyStore.date_end = futureDate
                 break;
         }
     }
@@ -160,6 +187,17 @@ function calcularTotalSinDescuento(precio, tipoPago) {
     const total = precio * meses[opcion];
     return total;
 }
+
+function addMonths(date, months) {
+    const result = new Date(date);
+
+    // Increment the month
+    result.setMonth(result.getMonth() + months);
+
+    return result;
+}
+
+
 </script>
 
 <style scoped>

@@ -10,6 +10,7 @@ export const useClientStore = defineStore({
       address: '',
       mail: '',
       age: '',
+      password: '',
       country: '',
       plans: [],
     }

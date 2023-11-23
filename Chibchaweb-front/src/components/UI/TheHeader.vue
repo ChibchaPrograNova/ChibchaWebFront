@@ -7,7 +7,7 @@
 
         <div class="actionRow">
             <RouterLink to="/userDashboard" v-if="loginStore.type == 'user'">🏠</RouterLink>
-            <RouterLink to="/mainDashboard" v-if="loginStore.type == 'emp'">🏠</RouterLink>
+            <RouterLink to="/dashboard" v-if="loginStore.type == 'emp'">🏠</RouterLink>
             <RouterLink to="/adminDashboard" v-if="loginStore.type == 'adm'">🏠</RouterLink>
             <RouterLink to="home" v-if="loginStore.isLoggedIn" @click="changeValue">Cerrar Sesión</RouterLink>
             <RouterLink to="login" v-else>Iniciar Sesión</RouterLink>
@@ -18,12 +18,21 @@
 
 <script setup>
 import { useLoginStore } from '../../stores/login'
+import { useClientStore } from '../../stores/client'
+import { useEmployeeStore } from '../../stores/employee'
+import { useDistributorStore } from '../../stores/distributor'
 
 const loginStore = useLoginStore()
+const clientStore = useClientStore()
+const employeeStore = useEmployeeStore()
+const distributorStore = useDistributorStore()
 
 function changeValue() {
     loginStore.isLoggedIn = !loginStore.isLoggedIn
     loginStore.type = ''
+    clientStore.client = {}
+    employeeStore.employee = {}
+    distributorStore.distributor = {}
 }
 
 

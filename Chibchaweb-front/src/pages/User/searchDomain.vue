@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>resultados para la pagina</h3>
+        <h3>Resultados para la página</h3>
         <h1>{{ paginaNombre.nombreDominio }}</h1>
         <div class="panel">
             <table>
@@ -8,26 +8,20 @@
                     <tr>
                         <th>Dominio Disponible</th>
                         <th>Distribuidor</th>
+                        <th>Plataforma</th>
+                        <th>Disponible</th>
                         <th>Comprar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{{ paginaNombre.nombreDominio }}.nz</td>
-                        <td>Alibaba</td>
+                    <tr v-for="item in domains" :key="item.id">
+                        <td>{{ item.name }}</td>
+                        <td>{{ buscarNombreDIstribuidor(item.id_Distributor) }}</td>
+                        <td>{{ item.plataform }}</td>
+                        <td>{{ item.available ? "✅" : "❌" }}</td>
                         <td>
-                            <button @click="redirectToSearch('Alibaba')">Comprar!</button>
+                            <button v-if="item.available" @click="redirectToSearch(item)">Ver más</button>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>{{ paginaNombre.nombreDominio }}.com</td>
-                        <td>Amazon</td>
-                        <td><button @click="redirectToSearch('Amazon')">Comprar!</button></td>
-                    </tr>
-                    <tr>
-                        <td>{{ paginaNombre.nombreDominio }}.gg</td>
-                        <td>Azure</td>
-                        <td><button @click="redirectToSearch('Azure')">Comprar</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -39,23 +33,61 @@
 import { useRouter } from 'vue-router';
 import { useClientStore } from '../../stores/client'
 import { useBuyStore } from '../../stores/buy'
+import { useDomainStore } from '../../stores/domain'
+import { onMounted, ref } from 'vue';
 
 let paginaNombre = defineProps(['nombreDominio']);
 
 const router = useRouter()
 const clientStore = useClientStore()
 const buyStore = useBuyStore()
+const domainStore = useDomainStore()
+const domains = ref([])
+const distributors = ref([])
 
-function redirectToSearch(distributor) {
+function redirectToSearch(domain) {
+    buyStore.domainName = paginaNombre.nombreDominio
+    buyStore.distribuidorName = domain.id_Distributor
+    domainStore.domain = domain
     if (clientStore.client.name != '') {
-        buyStore.domainName = paginaNombre.nombreDominio
-        buyStore.distribuidorName = distributor
         router.replace({ name: 'planView' })
 
     } else {
         router.replace({ name: 'registerView' })
     }
 }
+onMounted(async () => {
+    let nombre = paginaNombre.nombreDominio
+    const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Domain/?name=${nombre}`);
+    domains.value = await response.json()
+    if (domains.value.length == 0) {
+        const request = {
+            domain_name: paginaNombre.nombreDominio
+        }
+        const response = await fetch("https://chibchawebback-production-e6e7.up.railway.app/Admins/Process/", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        })
+        const result = await response.json();
+        domains.value = result
+    }
+    const responseDI = await fetch("https://chibchawebback-production-e6e7.up.railway.app/Admins/Distributors/")
+    distributors.value = await responseDI.json();
+})
+
+function buscarNombreDIstribuidor(id) {
+    const objetoEncontrado = distributors.value.find(objeto => objeto.id === id);
+    if (objetoEncontrado) {
+        return objetoEncontrado.name;
+    } else {
+        return 'Objeto no encontrado';
+    }
+}
+
+
 
 
 </script>
