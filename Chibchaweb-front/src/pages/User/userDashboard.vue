@@ -10,20 +10,17 @@
             <thead>
                 <tr>
                     <th>Dominio Registrado</th>
-                    <th>Plan</th>
                     <th>Precio</th>
+                    <th>Plan</th>
                     <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in data" :key="item.id">
+                <tr v-for="(item, index) in data" :key="item.id">
                     <td>{{ item.name }}</td>
-                    <td>{{ item.identification }}</td>
-                    <td>{{ item.mail }}</td>
+                    <td>{{ "$" + dataPlans[index][0].price }}</td>
+                    <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
                     <td>{{ item.activate ? 'Activo' : 'Desactivado' }}</td>
-                    <td>
-                        <button @click="redirectToSearch(item.id)">Ver Mas</button>
-                    </td>
                 </tr>
             </tbody>
         </table>
@@ -40,12 +37,19 @@ function redirectToSearch() {
     router.replace({ name: 'searchDomain', params: { nombreDominio: pagina } })
 }
 const data = ref([])
+const dataPlans = ref([])
 onMounted(async () => {
     const clientStore = useClientStore()
     try {
         const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Search/?idClient=${clientStore.client.id}`);
         const result = await response.json();
         data.value = result;
+        for (let element in data.value) {
+            const responseDomain = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/SearchP/?idPlan=${data.value[element].id_Plan}`);
+            const resultDomain = await responseDomain.json();
+            dataPlans.value.splice(element, 0, resultDomain)
+        }
+
     } catch (error) {
         console.error('Error al cargar los datos:', error);
     }

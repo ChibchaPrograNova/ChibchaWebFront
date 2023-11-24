@@ -54,7 +54,8 @@ onMounted(async () => {
     const planRequest = {
         date_start: buyStore.date_start,
         date_end: buyStore.date_end,
-        category: buyStore.paquete
+        category: buyStore.paquete,
+        price: buyStore.precioDiscount
     }
 
     const plan = await fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Plan/", {
