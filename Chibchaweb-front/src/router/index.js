@@ -83,11 +83,6 @@ const router = createRouter({
       component: () => import('../pages/Employee/mainDashboard.vue')
     },
     {
-      path: '/detailBuy',
-      name: 'detailOfBuy',
-      component: () => import('../pages/User/detailOfBuy.vue')
-    },
-    {
       path: '/vistaPayment',
       name: 'paymentView',
       component: () => import('../pages/User/paymentView.vue')
