@@ -44,7 +44,7 @@ import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue'
 import { useEmployeeStore } from '../../stores/employee';
 import { useTicketStore } from '../../stores/ticket'
-import Basecard from '../../components/UI/BaseCard.vue';
+import Basecard from '/../../components/UI/BaseCard.vue';
 
 
 const router = useRouter()

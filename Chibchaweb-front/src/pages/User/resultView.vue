@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import BaseCard from '../../components/UI/BaseCard.vue';
+import BaseCard from '/../../components/UI/BaseCard.vue';
 import { useRouter } from 'vue-router';
 import { useClientStore } from '../../stores/client';
 import { useBuyStore } from '../../stores/buy';
