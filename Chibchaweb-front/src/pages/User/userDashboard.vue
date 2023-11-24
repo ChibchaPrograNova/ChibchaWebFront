@@ -16,23 +16,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>ayaya.nz</td>
-                    <td>ChibchaOro</td>
-                    <td>$20.000</td>
-                    <td>Al Dia</td>
-                </tr>
-                <tr>
-                    <td>donas.com</td>
-                    <td>ChibchaOro</td>
-                    <td>$230.000</td>
-                    <td>Al Dia</td>
-                </tr>
-                <tr>
-                    <td>sorrylag.nz</td>
-                    <td>ChibchaPlatino</td>
-                    <td>$570.000</td>
-                    <td>Al Dia</td>
+                <tr v-for="item in data" :key="item.id">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.identification }}</td>
+                    <td>{{ item.mail }}</td>
+                    <td>{{ item.activate ? 'Activo' : 'Desactivado' }}</td>
+                    <td>
+                        <button @click="redirectToSearch(item.id)">Ver Mas</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -41,11 +32,25 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useClientStore } from '../../stores/client';
 let pagina = ''
 const router = useRouter()
 function redirectToSearch() {
     router.replace({ name: 'searchDomain', params: { nombreDominio: pagina } })
 }
+const data = ref([])
+onMounted(async () => {
+    const clientStore = useClientStore()
+    try {
+        const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Domain/?idClient=${clientStore.client.id}`);
+        const result = await response.json();
+        data.value = result;
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+    }
+});
+
 </script>
 
 <style scoped>

@@ -51,10 +51,26 @@ function redirectToDashboard() {
 }
 
 onMounted(async () => {
+    const planRequest = {
+        date_start: buyStore.date_start,
+        date_end: buyStore.date_end,
+        category: buyStore.paquete
+    }
+
+    const plan = await fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Plan/", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(planRequest),
+    })
+    const planResponse = await plan.json()
+
     const response = {
         available: false,
         id_Client: clientStore.client.id,
-        id_Distributor: buyStore.distribuidorName
+        id_Distributor: buyStore.distribuidorName,
+        id_Plan: planResponse.id
     }
     await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Domain/?id=${domainStore.domain.id}`, {
         method: 'PUT',

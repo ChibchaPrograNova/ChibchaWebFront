@@ -25,7 +25,7 @@
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(30000, tipoPagoOro) }}</p>
                 <p>Precio con Descuento = ${{ calcularTotal(30000, tipoPagoOro) }}</p>
                 <Button
-                    @click="redirectToPayment('ChibchaWeb Oro', calcularTotalSinDescuento(30000, tipoPagoOro), calcularTotal(30000, tipoPagoOro))">Comprar</Button>
+                    @click="redirectToPayment('Oro', calcularTotalSinDescuento(30000, tipoPagoOro), calcularTotal(30000, tipoPagoOro))">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard">
                 <h2 class="tarjeta-titulo">Plan Platino</h2>
@@ -48,7 +48,7 @@
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(40000, tipoPagoPlatino) }}</p>
                 <p>Precio con Descuento = ${{ calcularTotal(40000, tipoPagoPlatino) }}</p>
                 <Button
-                    @click="redirectToPayment('ChibchaWeb Platino', calcularTotalSinDescuento(40000, tipoPagoPlatino), calcularTotal(40000, tipoPagoPlatino))">Comprar</Button>
+                    @click="redirectToPayment('Platino', calcularTotalSinDescuento(40000, tipoPagoPlatino), calcularTotal(40000, tipoPagoPlatino))">Comprar</Button>
             </BaseCard>
             <BaseCard class="baseCard notFeatured">
                 <h2 class="tarjeta-titulo">Plan Plata</h2>
@@ -70,7 +70,7 @@
                 <p class="strike">Precio Normal = ${{ calcularTotalSinDescuento(20000, tipoPagoSilver) }}</p>
                 <p>Precio con Descuento = ${{ calcularTotal(20000, tipoPagoSilver) }}</p>
                 <Button
-                    @click="redirectToPayment('ChibchaWeb Plata', calcularTotalSinDescuento(20000, tipoPagoSilver), calcularTotal(20000, tipoPagoSilver))">Comprar</Button>
+                    @click="redirectToPayment('Plata', calcularTotalSinDescuento(20000, tipoPagoSilver), calcularTotal(20000, tipoPagoSilver))">Comprar</Button>
             </BaseCard>
         </div>
     </div>
@@ -92,7 +92,7 @@ function redirectToPayment(paquete, precio, precioDescuento) {
     const currentDate = new Date();
     const futureDate = ref('')
     buyStore.date_start = currentDate
-    if (paquete === 'ChibchaWeb Plata') {
+    if (paquete === 'Plata') {
         switch (tipoPagoSilver.value) {
             case '0':
                 futureDate.value = addMonths(currentDate, 1);
@@ -115,7 +115,7 @@ function redirectToPayment(paquete, precio, precioDescuento) {
                 buyStore.date_end = futureDate
                 break;
         }
-    } else if (paquete === 'ChibchaWeb Oro') {
+    } else if (paquete === 'Oro') {
         switch (tipoPagoOro.value) {
             case '0':
                 buyStore.plan = 'Mensual'
