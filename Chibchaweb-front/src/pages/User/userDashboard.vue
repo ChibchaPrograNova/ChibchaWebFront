@@ -13,6 +13,7 @@
                     <th>Precio</th>
                     <th>Plan</th>
                     <th>Estado</th>
+                    <th>Semaforo</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@
                     <td>{{ "$" + dataPlans[index][0].price }}</td>
                     <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
                     <td>{{ item.activate ? 'Activo' : 'Desactivado' }}</td>
+                    <td>{{ calcularSemaforo(dataPlans[index][0].date_end) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -54,6 +56,24 @@ onMounted(async () => {
         console.error('Error al cargar los datos:', error);
     }
 });
+
+function calcularSemaforo(date) {
+
+    let fechaActual = new Date();
+    let diferenciaEnMilisegundos = fechaActual - date;
+    let diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
+
+    let diasRojo = 5;
+    let diasAmarillo = 15;
+
+    if (diferenciaEnDias < diasRojo) {
+        return "Rojo";
+    } else if (diferenciaEnDias < diasAmarillo && diferenciaEnDias > diasRojo) {
+        return "Amarillo";
+    } else {
+        return "Verde"
+    }
+}
 
 </script>
 
