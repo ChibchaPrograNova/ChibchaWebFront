@@ -72,14 +72,16 @@ const clientStore = useClientStore()
 const loginStore = useLoginStore()
 async function register(newUser) {
     if (isEdit.value == false) {
-        await fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/", {
+        const register = await fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/", {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(newUser),
         })
+        const RegisterResponse = await register.json()
         clientStore.client = newUser
+        clientStore.client.id = RegisterResponse.id
         loginStore.isLoggedIn = true
         redirectToPlan()
     } else {
