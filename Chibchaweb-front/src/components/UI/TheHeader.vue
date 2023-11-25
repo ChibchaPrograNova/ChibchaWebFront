@@ -30,9 +30,41 @@ const distributorStore = useDistributorStore()
 function changeValue() {
     loginStore.isLoggedIn = !loginStore.isLoggedIn
     loginStore.type = ''
-    clientStore.client = {}
-    employeeStore.employee = {}
-    distributorStore.distributor = {}
+    clientStore.client = {
+        id: '',
+        name: '',
+        identification: '',
+        address: '',
+        mail: '',
+        age: '',
+        password: '',
+        country: '',
+        plans: [],
+    }
+    employeeStore.employee = {
+        id: '',
+        name: '',
+        identification: '',
+        address: '',
+        mail: '',
+        password: '',
+        age: '',
+        country: '',
+        occupation: '',
+        salary: '',
+        activate: true
+    }
+    distributorStore.distributor = {
+        id: '',
+        name: '',
+        nit: '',
+        address: '',
+        mail: '',
+        q_domains: '',
+        category: '',
+        bank_account: '',
+        activate: true
+    }
 }
 
 

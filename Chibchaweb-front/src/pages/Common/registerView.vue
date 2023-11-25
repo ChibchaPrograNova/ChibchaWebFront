@@ -3,7 +3,7 @@
         <h3>{{ titulo }}</h3>
         <div class="form-container">
             <BaseCard>
-                <TheForm :form-config="formConfig1" :button-text="textoBoton" @submit-event="register" />
+                <TheForm :form-config="formConfig1" :button-text="textoBoton" @submit-event="validate" />
             </BaseCard>
         </div>
     </div>
@@ -24,7 +24,7 @@ let formConfig1 = [
         placeholder: 'Ingresa tu nombre completo',
     },
     {
-        type: 'number',
+        type: 'text',
         name: 'identification',
         label: 'Número de Documento',
         placeholder: 'Ingresa tu número de documento',
@@ -70,6 +70,19 @@ function redirectToUserInfo() {
 
 const clientStore = useClientStore()
 const loginStore = useLoginStore()
+
+function validate(data) {
+    if (!data.age || !data.identification || !data.country || !data.password || !data.mail || !data.address || !data.name) {
+        alert("Por favor ingrese todos los datos solicitados")
+    }
+    else if (data.identification.length > 12) {
+        alert("Ingrese un numero de identificación valido (maximo 12 caracteres)")
+    } else if (data.age > 100 || data.age < 13) {
+        alert("Ingrese un edad valida")
+    } else {
+        register(data)
+    }
+}
 async function register(newUser) {
     if (isEdit.value == false) {
         const register = await fetch("https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/", {
@@ -83,6 +96,7 @@ async function register(newUser) {
         clientStore.client = newUser
         clientStore.client.id = RegisterResponse.id
         loginStore.isLoggedIn = true
+        loginStore.type = 'user'
         redirectToPlan()
     } else {
         await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Clients/Manage/?id=${id.value}`, {

@@ -9,7 +9,29 @@
                 <h3>Correo</h3> {{ data.mail }}
                 <h3>Edad</h3> {{ data.age }}
                 <h3>Pais: </h3> {{ data.country }}
-                <h3>planes: </h3> {{ data.plans }}
+                <div>
+                    <h3>planes: </h3>
+                    <table v-if="areData">
+                        <thead>
+                            <tr>
+                                <th>Dominio Registrado</th>
+                                <th>Precio</th>
+                                <th>Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in dataD" :key="item.id">
+                                <td>{{ item.name }}</td>
+                                <td>{{ "$" + dataPlans[index][0].price }}</td>
+                                <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div v-else class="emptyDiv">
+                        <img src="/src/assets/empty.svg" alt="empty" class="empty">
+                        <h3>El usuario no cuenta con dominios registrados a su nombre</h3>
+                    </div>
+                </div>
                 <h3>Estado: </h3> {{ data.activate ? 'Activo' : 'Desactivado' }}
             </BaseCard>
 
@@ -29,6 +51,10 @@ import { useClientStore } from '../../../stores/client';
 let idClient = defineProps(['id']);
 const data = ref([])
 
+const dataD = ref([])
+const dataPlans = ref([])
+const areData = ref(false)
+
 onMounted(async () => {
     const clientStore = useClientStore()
     try {
@@ -38,6 +64,23 @@ onMounted(async () => {
         clientStore.client = result
     } catch (error) {
         console.error('Error al cargar los datos:', error);
+    }
+    try {
+        const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Search/?idClient=${idClient.id}`);
+        const result = await response.json();
+        dataD.value = result;
+        if (response.ok) {
+            areData.value = true
+        }
+    } catch (error) {
+        areData.value = false
+    }
+    if (areData.value == true) {
+        for (let element in dataD.value) {
+            const responseDomain = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/SearchP/?idPlan=${dataD.value[element].id_Plan}`);
+            const resultDomain = await responseDomain.json();
+            dataPlans.value.splice(element, 0, resultDomain)
+        }
     }
 });
 
@@ -107,8 +150,39 @@ h1 {
 h3 {
     font-family: 'Poppins', sans-serif;
     font-style: regular;
-    font-weight: 100;
+    font-weight: bold;
     text-align: left;
     font-size: 20px;
+}
+
+.emptyDiv {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    color: #7c8a6e;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.empty {
+    height: 15vw;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #7c8a6e;
+    color: white;
 }
 </style>

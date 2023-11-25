@@ -1,31 +1,40 @@
 <template>
     <div>
-        <h1>Nombre de tu futura pagina</h1>
-        <div class="searchRow">
-            <input type="text" class="srcInput" v-model="pagina">
-            <button @click="redirectToSearch">Buscar</button>
+        <div v-if="isLoading" class="spiner">
+            <BaseSpinner />
         </div>
-        <h1>Mis dominios Registrados</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Dominio Registrado</th>
-                    <th>Precio</th>
-                    <th>Plan</th>
-                    <th>Estado</th>
-                    <th>Semaforo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in data" :key="item.id">
-                    <td>{{ item.name }}</td>
-                    <td>{{ "$" + dataPlans[index][0].price }}</td>
-                    <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
-                    <td>{{ item.activate ? 'Activo' : 'Desactivado' }}</td>
-                    <td>{{ calcularSemaforo(dataPlans[index][0].date_end) }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <div v-else>
+            <h1>Nombre de tu futura pagina</h1>
+            <div class="searchRow">
+                <input type="text" class="srcInput" v-model="pagina">
+                <button @click="redirectToSearch">Buscar</button>
+            </div>
+            <h1>Mis dominios Registrados</h1>
+            <table v-if="areData">
+                <thead>
+                    <tr>
+                        <th>Dominio Registrado</th>
+                        <th>Precio</th>
+                        <th>Plan</th>
+                        <th>Semaforo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in data" :key="item.id">
+                        <td>{{ item.name }}</td>
+                        <td>{{ "$" + dataPlans[index][0].price }}</td>
+                        <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
+                        <td>
+                            <img :src="calcularSemaforo(dataPlans[index][0].date_end)" alt="semaforo" class="semaforo">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div v-else class="emptyDiv">
+                <img src="/src/assets/empty.svg" alt="empty" class="empty">
+                <h3>No tienes dominios registrados aun</h3>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -33,6 +42,8 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useClientStore } from '../../stores/client';
+import BaseSpinner from '../../components/UI/BaseSpinner.vue'
+
 let pagina = ''
 const router = useRouter()
 function redirectToSearch() {
@@ -40,38 +51,50 @@ function redirectToSearch() {
 }
 const data = ref([])
 const dataPlans = ref([])
+const isLoading = ref(true)
+const areData = ref(false)
+
 onMounted(async () => {
     const clientStore = useClientStore()
     try {
         const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/Search/?idClient=${clientStore.client.id}`);
         const result = await response.json();
         data.value = result;
+        if (response.ok) {
+            areData.value = true
+        }
+    } catch (error) {
+        areData.value = false
+    }
+    if (areData.value == true) {
         for (let element in data.value) {
             const responseDomain = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Admins/SearchP/?idPlan=${data.value[element].id_Plan}`);
             const resultDomain = await responseDomain.json();
             dataPlans.value.splice(element, 0, resultDomain)
         }
-
-    } catch (error) {
-        console.error('Error al cargar los datos:', error);
     }
+    isLoading.value = false
 });
 
-function calcularSemaforo(date) {
+function calcularSemaforo(dateR) {
 
+    let date = new Date(dateR)
     let fechaActual = new Date();
-    let diferenciaEnMilisegundos = fechaActual - date;
+    console.log("fecha actual : ", fechaActual)
+    console.log("fecha a verificar : ", date)
+    let diferenciaEnMilisegundos = date - fechaActual;
     let diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
 
     let diasRojo = 5;
     let diasAmarillo = 15;
 
+    console.log(diferenciaEnDias)
     if (diferenciaEnDias < diasRojo) {
-        return "Rojo";
+        return '/src/assets/Rojo.svg'
     } else if (diferenciaEnDias < diasAmarillo && diferenciaEnDias > diasRojo) {
-        return "Amarillo";
+        return "/src/assets/Amarillo.svg";
     } else {
-        return "Verde"
+        return "/src/assets/Verde.svg"
     }
 }
 
@@ -87,6 +110,37 @@ h1 {
     font-style: bold;
     font-weight: 600;
     font-size: 40px;
+}
+
+h3 {
+    font-family: 'Poppins', sans-serif;
+    font-style: bold;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.semaforo {
+    height: 50px;
+}
+
+.emptyDiv {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    color: #7c8a6e;
 }
 
 
@@ -123,6 +177,10 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+}
+
+.empty {
+    height: 15vw;
 }
 
 th,
