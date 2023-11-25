@@ -2,7 +2,7 @@
     <div>
         <h1>Ayuda y soporte</h1>
         <h3>Describe la problematica que tuviste</h3>
-        <TheForm :form-config="formConfig1" :button-text="'Registrar'" @submit-event="login" />
+        <TheForm :form-config="formConfig1" :button-text="'Registrar'" @submit-event="send" />
         <FileUploader />
     </div>
 </template>
@@ -10,7 +10,9 @@
 <script setup>
 import FileUploader from '../../components/UI/FileUploader.vue';
 import TheForm from '../../components/UI/TheForm.vue';
+import { useClientStore } from '../../stores/client'
 
+const clientStore = useClientStore()
 let formConfig1 = [
     {
         type: 'textarea',
@@ -19,7 +21,12 @@ let formConfig1 = [
         placeholder: 'En que podemos ayudarte',
     }
 ]
+
+function send() {
+    console.log(clientStore.client.id)
+}
 </script>
+
 
 <style scoped>
 body {

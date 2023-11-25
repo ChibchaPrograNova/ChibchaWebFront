@@ -1,44 +1,49 @@
 <template>
-    <div class="parent">
-        <div class="div1">
-            <BaseCard>
-                <h1>Info Usuario:</h1>
-                <h3>Nombre</h3> {{ data.name }}
-                <h3>Cedula</h3> {{ data.identification }}
-                <h3>Dirección</h3> {{ data.address }}
-                <h3>Correo</h3> {{ data.mail }}
-                <h3>Edad</h3> {{ data.age }}
-                <h3>Pais: </h3> {{ data.country }}
-                <div>
-                    <h3>planes: </h3>
-                    <table v-if="areData">
-                        <thead>
-                            <tr>
-                                <th>Dominio Registrado</th>
-                                <th>Precio</th>
-                                <th>Plan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in dataD" :key="item.id">
-                                <td>{{ item.name }}</td>
-                                <td>{{ "$" + dataPlans[index][0].price }}</td>
-                                <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div v-else class="emptyDiv">
-                        <img src="/src/assets/empty.svg" alt="empty" class="empty">
-                        <h3>El usuario no cuenta con dominios registrados a su nombre</h3>
-                    </div>
-                </div>
-                <h3>Estado: </h3> {{ data.activate ? 'Activo' : 'Desactivado' }}
-            </BaseCard>
-
+    <div>
+        <div v-if="isLoading" class="spiner">
+            <BaseSpinner />
         </div>
-        <div class="div2">
-            <button @click="desactivateAccount">Desactivar Cuenta</button>
-            <button @click="reditectToForm">Editar Datos Personales</button>
+        <div class="parent" v-else>
+            <div class="div1">
+                <BaseCard>
+                    <h1>Info Usuario:</h1>
+                    <h3>Nombre</h3> {{ data.name }}
+                    <h3>Cedula</h3> {{ data.identification }}
+                    <h3>Dirección</h3> {{ data.address }}
+                    <h3>Correo</h3> {{ data.mail }}
+                    <h3>Edad</h3> {{ data.age }}
+                    <h3>Pais: </h3> {{ data.country }}
+                    <div>
+                        <h3>planes: </h3>
+                        <table v-if="areData">
+                            <thead>
+                                <tr>
+                                    <th>Dominio Registrado</th>
+                                    <th>Precio</th>
+                                    <th>Plan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in dataD" :key="item.id">
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ "$" + dataPlans[index][0].price }}</td>
+                                    <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div v-else class="emptyDiv">
+                            <img src="/src/assets/empty.svg" alt="empty" class="empty">
+                            <h3>El usuario no cuenta con dominios registrados a su nombre</h3>
+                        </div>
+                    </div>
+                    <h3>Estado: </h3> {{ data.activate ? 'Activo' : 'Desactivado' }}
+                </BaseCard>
+
+            </div>
+            <div class="div2">
+                <button @click="desactivateAccount">Desactivar Cuenta</button>
+                <button @click="reditectToForm">Editar Datos Personales</button>
+            </div>
         </div>
     </div>
 </template>
@@ -48,12 +53,14 @@ import BaseCard from '../../../components/UI/BaseCard.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useClientStore } from '../../../stores/client';
+import BaseSpinner from '../../../components/UI/BaseSpinner.vue';
 let idClient = defineProps(['id']);
 const data = ref([])
 
 const dataD = ref([])
 const dataPlans = ref([])
 const areData = ref(false)
+const isLoading = ref(true)
 
 onMounted(async () => {
     const clientStore = useClientStore()
@@ -82,6 +89,7 @@ onMounted(async () => {
             dataPlans.value.splice(element, 0, resultDomain)
         }
     }
+    isLoading.value = false
 });
 
 async function desactivateAccount() {

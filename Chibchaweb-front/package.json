@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
     "nodemailer": "^6.9.7",
     "pinia": "^2.1.7",
     "vue": "^3.3.4",

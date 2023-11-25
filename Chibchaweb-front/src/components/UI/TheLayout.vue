@@ -4,7 +4,7 @@
         <main>
             <slot></slot>
         </main>
-        <Button class="ayuda" @click="redirectToHelp">?</Button>
+        <button class="ayuda" @click="redirectToHelp" v-if="loginStore.isLoggedIn">?</button>
         <TheFooter />
     </div>
 </template>
@@ -13,8 +13,10 @@
 import TheHeader from '../../components/UI/TheHeader.vue';
 import TheFooter from '../../components/UI/TheFooter.vue';
 import { useRouter } from 'vue-router';
+import { useLoginStore } from '../../stores/login';
 
 const router = useRouter()
+const loginStore = useLoginStore()
 
 function redirectToHelp() {
     router.replace({ name: 'ayuda' })

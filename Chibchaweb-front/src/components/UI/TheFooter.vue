@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <p>Desarrollado por PrograNova @2023 V.0.0.79</p>
+        <p>Desarrollado por PrograNova @2023 V.0.0.80</p>
     </footer>
 </template>
   
