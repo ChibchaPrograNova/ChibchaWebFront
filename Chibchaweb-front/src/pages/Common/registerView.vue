@@ -62,7 +62,7 @@ let formConfig1 = [
 ]
 const router = useRouter()
 function redirectToPlan() {
-    router.replace({ name: 'planView' })
+    router.replace({ name: 'userDashboard' })
 }
 function redirectToUserInfo() {
     router.replace({ name: 'userView' })
