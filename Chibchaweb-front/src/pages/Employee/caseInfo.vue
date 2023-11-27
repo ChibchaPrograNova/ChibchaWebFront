@@ -34,8 +34,8 @@
             <BaseCard class="responseRow">
                 <h1>Respuesta</h1>
                 <div class="inpu">
-                    <textarea name="solution" id="aaa" cols="90" rows="10"></textarea>
-                    <button>Enviar Respuesta</button>
+                    <textarea name="solution" id="aaa" cols="90" rows="10" v-model="respuesta"></textarea>
+                    <button @click="enviar">Enviar Respuesta</button>
                 </div>
 
             </BaseCard>
@@ -47,8 +47,31 @@
 import BaseCard from '../../components/UI/BaseCard.vue';
 import { useTicketStore } from '../../stores/ticket';
 import { useEmployeeStore } from '../../stores/employee';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 const ticketStore = useTicketStore()
 const employeeStore = useEmployeeStore()
+const respuesta = ref('')
+const router = useRouter
+
+async function enviar() {
+    const request = {
+        solucion: respuesta.value
+    }
+    const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Ticket/?id=${ticketStore.ticket.client}`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+    })
+    if (response.ok) {
+        alert('respuesta enviada con exito')
+        router.replace({ name: 'home' })
+    }
+
+}
+
 </script>
 
 <style scoped>

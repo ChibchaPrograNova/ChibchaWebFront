@@ -25,6 +25,7 @@
             </table>
             <div class="actionButton">
                 <button @click="redirectToNew">Añadir nuevo distribuidor</button>
+                <button @click="sendReport">Enviar reporte mensual</button>
             </div>
         </div>
     </div>
@@ -52,6 +53,13 @@ function redirectToSearch(id) {
 }
 function redirectToNew() {
     router.replace({ name: 'distributorForm' })
+}
+
+async function sendReport() {
+    const response = await fetch('https://chibchawebback-production-e6e7.up.railway.app/Admins/XML/');
+    if (response.ok) {
+        alert("Reportes enviados correctamente a los distribuidores")
+    }
 }
 </script>
 
@@ -142,5 +150,6 @@ button:focus {
     flex-direction: row;
     justify-content: center;
     margin-top: 20px;
+    gap: 30px;
 }
 </style>
