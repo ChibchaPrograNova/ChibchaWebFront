@@ -26,6 +26,7 @@
             <div class="actionButton">
                 <button @click="redirectToNew">Añadir nuevo distribuidor</button>
                 <button @click="sendReport">Enviar reporte mensual</button>
+                <button @click="generateComission">Generar calculo comisiones</button>
             </div>
         </div>
     </div>
@@ -60,6 +61,10 @@ async function sendReport() {
     if (response.ok) {
         alert("Reportes enviados correctamente a los distribuidores")
     }
+}
+async function generateComission() {
+    window.open('https://chibchawebback-production-e6e7.up.railway.app/Pays/Calculate-commissions/', '_blank');
+    alert("Se ha generado el archivo para las transferencias bancarias")
 }
 </script>
 
