@@ -43,12 +43,19 @@ import ClientCard from '../../components/client/clientCard.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBuyStore } from '../../stores/buy';
+import { useCardStore } from '../../stores/card';
+import { useClientStore } from '../../stores/client';
 
 
 let isDisabled = ref(true)
 const buyStore = useBuyStore()
+const cardStore = useCardStore()
+const clientStore = useClientStore()
 
-function activateButton() {
+function activateButton(data) {
+    cardStore.id_Client = clientStore.client.id
+    cardStore.number = data.numeroCreditCard
+    cardStore.ccv = data.ccv
     isDisabled.value = !isDisabled.value
 }
 

@@ -40,13 +40,45 @@ import { useRouter } from 'vue-router';
 import { useClientStore } from '../../stores/client';
 import { useBuyStore } from '../../stores/buy';
 import { useDomainStore } from '../../stores/domain';
+import { useCardStore } from '../../stores/card';
 import { onMounted } from 'vue';
 
 const router = useRouter()
 const clientStore = useClientStore()
 const buyStore = useBuyStore()
 const domainStore = useDomainStore()
-function redirectToDashboard() {
+const cardStore = useCardStore()
+
+async function redirectToDashboard() {
+    const requestCard = {
+        id_Client: clientStore.client.id,
+        number: cardStore.number,
+        ccv: cardStore.ccv
+    }
+    const respCard = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Pays/Card/`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestCard),
+    })
+    const responseCard = await respCard.json()
+    const requestPay = {
+        id_Client: clientStore.client.id,
+        id_Card: responseCard.id,
+        id_Distributor: buyStore.distribuidorName,
+        amount: buyStore.precioDiscount,
+        type: buyStore.plan
+    }
+
+    const respPay = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Pays/Pay/`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestPay),
+    })
+
     router.replace({ name: 'userDashboard' })
 }
 

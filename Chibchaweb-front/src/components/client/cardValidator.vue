@@ -33,7 +33,7 @@ let formConfig1 = [
     },
     {
         type: 'password',
-        name: 'credit-card',
+        name: 'ccv',
         label: 'CCV',
         placeholder: 'CCV',
     },
@@ -60,7 +60,7 @@ function validateCreditCard(datos) {
     // Determina el tipo de tarjeta
     cardType.value = detectCardType(numeroTarjeta);
     if (isValid.value === true && datos.password === clientStore.client.password) {
-        emit('cardValid')
+        emit('cardValid', datos)
     }
 }
 function detectCardType(cardNumber) {
