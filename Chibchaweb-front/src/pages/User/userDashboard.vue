@@ -25,7 +25,12 @@
                         <td>{{ "$" + dataPlans[index][0].price }}</td>
                         <td>{{ "Chibcha " + dataPlans[index][0].category }}</td>
                         <td>
-                            <img :src="calcularSemaforo(dataPlans[index][0].date_end)" alt="semaforo" class="semaforo">
+                            <img v-if="semaforoColors[index] == 'Rojo'" src="/src/assets/Rojo.svg" alt="semaforo"
+                                class="semaforo">
+                            <img v-else-if="semaforoColors[index] == 'Verde'" src="/src/assets/Verde.svg" alt="semaforo"
+                                class="semaforo">
+                            <img v-else-if="semaforoColors[index] == 'Amarillo'" src="/src/assets/Amarillo.svg"
+                                alt="semaforo" class="semaforo">
                         </td>
                     </tr>
                 </tbody>
@@ -53,6 +58,7 @@ const data = ref([])
 const dataPlans = ref([])
 const isLoading = ref(true)
 const areData = ref(false)
+const semaforoColors = ref([])
 
 onMounted(async () => {
     const clientStore = useClientStore()
@@ -72,6 +78,9 @@ onMounted(async () => {
             const resultDomain = await responseDomain.json();
             dataPlans.value.splice(element, 0, resultDomain)
         }
+        for (let i in dataPlans.value) {
+            semaforoColors.value.splice(i, 0, calcularSemaforo(dataPlans.value[i][0].date_end))
+        }
     }
     isLoading.value = false
 });
@@ -80,21 +89,17 @@ function calcularSemaforo(dateR) {
 
     let date = new Date(dateR)
     let fechaActual = new Date();
-    console.log("fecha actual : ", fechaActual)
-    console.log("fecha a verificar : ", date)
     let diferenciaEnMilisegundos = date - fechaActual;
     let diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
 
     let diasRojo = 5;
     let diasAmarillo = 15;
-
-    console.log(diferenciaEnDias)
     if (diferenciaEnDias < diasRojo) {
-        return '/src/assets/Rojo.svg'
+        return 'Rojo'
     } else if (diferenciaEnDias < diasAmarillo && diferenciaEnDias > diasRojo) {
-        return "/src/assets/Amarillo.svg";
+        return "Amarillo";
     } else {
-        return "/src/assets/Verde.svg"
+        return "Verde"
     }
 }
 
