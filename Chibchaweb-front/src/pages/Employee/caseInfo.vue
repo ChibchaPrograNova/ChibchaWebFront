@@ -56,9 +56,10 @@ const router = useRouter
 
 async function enviar() {
     const request = {
+        id: ticketStore.ticket.client,
         solucion: respuesta.value
     }
-    const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Ticket/?id=${ticketStore.ticket.client}`, {
+    const response = await fetch(`https://chibchawebback-production-e6e7.up.railway.app/Employees/Ticket/`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
